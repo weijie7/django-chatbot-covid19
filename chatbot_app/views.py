@@ -82,7 +82,8 @@ def webhook(request):
     dialogflow_response = DialogflowResponse(text1)
     reply = dialogflow_response.get_final_response()
 
-
+    db.connections.close_all()
     # return generated response
     return HttpResponse(reply, content_type='application/json; charset=utf-8')
 
+db.connections.close_all()
