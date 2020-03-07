@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from requests import get
 import pandas as pd
 from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines
-
+from WebScrape import statusScrapper, newsScrapper
 
 # Create your views here.
 
@@ -63,6 +63,16 @@ def webhook(request):
             title_ = news['news_title']
             link_ = news['news_link']
             text1 = f"{date_} \n{title_} \n{link_}\n\nFor more info: https://www.moh.gov.sg/covid-19"
+
+    # --------------------------#
+    # SYNC  INTENT              #
+    # --------------------------#
+    if intent == "sync":
+        ss = statusScrapper()
+        ss.start()
+        ns = newsScrapper()
+        ns.start()
+        text1 = "Sync/update completed."
 
 
     dialogflow_response = DialogflowResponse(text1)
