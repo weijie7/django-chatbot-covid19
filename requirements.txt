@@ -1,0 +1,5 @@
+django==2.2.10
+Beautifulsoup4
+requests
+pandas
+pydialogflow-fulfillment
