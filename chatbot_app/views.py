@@ -9,6 +9,7 @@ from requests import get
 import pandas as pd
 from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines
 from WebScrape import statusScrapper, newsScrapper
+from django import db
 
 # Create your views here.
 
@@ -80,6 +81,8 @@ def webhook(request):
 
     dialogflow_response = DialogflowResponse(text1)
     reply = dialogflow_response.get_final_response()
+
+    db.connections.close_all()
 
     # return generated response
     return HttpResponse(reply, content_type='application/json; charset=utf-8')
