@@ -13,9 +13,6 @@ from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-globalLastUpdate.objects.all().delete()
-globalStatus.objects.all().delete()
-
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
 class statusScrapper():
