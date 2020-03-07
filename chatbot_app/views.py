@@ -57,13 +57,16 @@ def webhook(request):
     # HEADLINE NEWS INTENT      #
     # --------------------------#
     if intent == "latest-news-covid":
-        news_list = list(MOHHeadlines.objects.order_by('news_date').values())
-        for news in news_list[-3:]: #top3
+        news_list = list(MOHHeadlines.objects.order_by('-news_date').values())
+        metatext = "Below are the top 3 latest news:\n"
+        for news in news_list[:3]: #top3
             date_ = news['news_date'].strftime('%d %b, %Y')
             title_ = news['news_title']
             link_ = news['news_link']
-            text1 = f"{date_} \n{title_} \n{link_}\n\nFor more info: https://www.moh.gov.sg/covid-19"
-
+            metatext = metatext + f"{date_} \n{title_} \n{link_}\n\n"
+        
+        text1 = metatext + "For more info: https://www.moh.gov.sg/covid-19"
+            
     # --------------------------#
     # SYNC  INTENT              #
     # --------------------------#
