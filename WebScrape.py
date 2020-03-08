@@ -45,10 +45,10 @@ class statusScrapper():
             res.append(row)
 
         col = ['country', 'diagnosed', 'new_cases', 'death',
-            'new_death', 'discharged', 'critical', 'region','nonsense']
+            'new_death', 'discharged', 'active', 'critical','nonsense1']
         pd_table = pd.DataFrame(res, columns=col)
         global_dict = pd_table.to_dict('records')
-        model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], region=i['region']) for i in global_dict]
+        model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active']) for i in global_dict]
 
         try:
             globalStatus.objects.bulk_create(model_instance)

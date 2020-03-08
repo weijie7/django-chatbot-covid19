@@ -38,6 +38,7 @@ def webhook(request):
             diagnose_ = pd_table[pd_table['country'] == country]['diagnosed'].iloc[0]
             death_ = pd_table[pd_table['country'] == country]['death'].iloc[0]
             discharged_ = pd_table[pd_table['country'] == country]['discharged'].iloc[0]
+            active_ = pd_table[pd_table['country'] == country]['active'].iloc[0]
             critical_ = pd_table[pd_table['country'] == country]['critical'].iloc[0]
             new_case_ = pd_table[pd_table['country'] == country]['new_cases'].iloc[0]
             new_death_ = pd_table[pd_table['country'] == country]['new_death'].iloc[0]
@@ -47,6 +48,7 @@ def webhook(request):
             diagnose_ = pd_table[pd_table['country'] == 'total:']['diagnosed'].iloc[0]
             death_ = pd_table[pd_table['country'] == 'total:']['death'].iloc[0]
             discharged_ = pd_table[pd_table['country'] == 'total:']['discharged'].iloc[0]
+            active_ = pd_table[pd_table['country'] == 'total:']['active'].iloc[0]
             critical_ = pd_table[pd_table['country'] == 'total:']['critical'].iloc[0]
             new_case_ = pd_table[pd_table['country'] == 'total:']['new_cases'].iloc[0]
             new_death_ = pd_table[pd_table['country'] == 'total:']['new_death'].iloc[0]
@@ -72,11 +74,15 @@ def webhook(request):
     # SYNC  INTENT              #
     # --------------------------#
     if intent == "sync":
-        ss = statusScrapper()
-        ss.start()
-        ns = newsScrapper()
-        ns.start()
-        text1 = "Sync/update completed."
+        try:
+            ss = statusScrapper()
+            ss.start()
+            ns = newsScrapper()
+            ns.start()
+            text1 = "Sync/update completed."
+        
+        except:
+            text1="Error occurred. Contact admin to debug."
 
 
     dialogflow_response = DialogflowResponse(text1)

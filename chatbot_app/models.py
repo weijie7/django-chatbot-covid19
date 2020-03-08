@@ -9,8 +9,8 @@ class globalStatus(models.Model):
     death = models.IntegerField()
     new_death = models.IntegerField()
     discharged = models.IntegerField()
-    critical = models.IntegerField()
-    region = models.CharField(max_length=50)
+    active = models.IntegerField()
+    critical = models.IntegerField()2
     created = models.DateTimeField(auto_now_add= True)
     updated = models.DateTimeField(auto_now=True)
 
