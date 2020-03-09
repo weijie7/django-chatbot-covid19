@@ -6,7 +6,7 @@ class globalStatus(models.Model):
     country = models.CharField(max_length=50, blank=False, unique=True)
     diagnosed = models.IntegerField()
     new_cases = models.IntegerField()
-    death = models.IntegerField()
+py    death = models.IntegerField()
     new_death = models.IntegerField()
     discharged = models.IntegerField()
     active = models.IntegerField()

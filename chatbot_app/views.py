@@ -74,17 +74,17 @@ def webhook(request):
     # SYNC  INTENT              #
     # --------------------------#
     if intent == "sync":
-        try:
-            ss = statusScrapper()
-            ss.start()
-            ns = newsScrapper()
-            ns.start()
-            text1 = "Sync/update completed."
+        # try:
+        ss = statusScrapper()
+        ss.start()
+        ns = newsScrapper()
+        ns.start()
+        text1 = "Sync/update completed."
         
-        except:
-            text1="Error occurred. Contact admin to debug."
+    #     except:
+    #         text1="Error occurred. Contact admin to debug."
 
-
+    # print(text1)
     dialogflow_response = DialogflowResponse(text1)
     reply = dialogflow_response.get_final_response()
 
