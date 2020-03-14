@@ -21,3 +21,15 @@ class MOHHeadlines(models.Model):
     news_title = models.CharField(max_length=100, blank=False)
     news_link = models.URLField(unique = True)
     news_date = models.DateField(null=True)
+
+class hospitalList(models.Model):
+    hospital = 'HOSPITAL'
+    polyclinic = 'POLYCLINIC'
+    type_choice = [(hospital, 'Hospital'), (polyclinic, 'Polyclinic')]
+
+    Name = models.CharField(max_length=100, blank=False, unique=True)
+    Type = models.CharField(max_length=50, choices = type_choice, default= hospital)
+    address = models.CharField(max_length=200)
+    lat = models.FloatField()
+    lng = models.FloatField()
+    geocode_result = models.CharField(max_length = 5000)

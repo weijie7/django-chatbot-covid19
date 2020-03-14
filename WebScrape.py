@@ -81,8 +81,8 @@ class newsScrapper():
 
         for i, news in enumerate(a[1:]):
             dict = {
-                    'news_date' : datetime.strptime(news.findAll('td')[0].getText().replace('\xa0', ''), '%d %b %Y').date(),
-                    'news_title' : news.findAll('td')[1].getText().replace('\xa0',''),
+                    'news_date' : datetime.strptime(news.findAll('td')[0].getText().replace('\xa0', ' '), '%d %b %Y').date(),
+                    'news_title' : news.findAll('td')[1].getText().replace('\xa0',' '),
                     'news_link' : news.findAll('a', href=True)[0]['href']
                     }
             try:
