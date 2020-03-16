@@ -4,3 +4,4 @@ requests
 pandas
 pydialogflow-fulfillment
 googlemaps
+gunicorn
