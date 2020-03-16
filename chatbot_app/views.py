@@ -7,9 +7,13 @@ from pydialogflow_fulfillment.response import SimpleResponse, OutputContexts
 from bs4 import BeautifulSoup
 from requests import get
 import pandas as pd
-from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines
+from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
 from WebScrape import statusScrapper, newsScrapper
 from django import db
+import googlemaps
+from datetime import datetime
+gmaps = googlemaps.Client(key = 'AIzaSyCpqFU-7MTe4GSgFzuobfscIYm1E-tLrgY')
+
 
 # Create your views here.
 
@@ -70,21 +74,44 @@ def webhook(request):
         
         text1 = metatext + "For more info: https://www.moh.gov.sg/covid-19"
             
+    
+    # --------------------------#
+    # Distance to Hospital      #
+    # --------------------------#
+    if intent == "nearest-hospital-covid":
+        premise_ = req.get('queryResult').get('parameters').get('healthcare').capitalize()
+        address_ = req.get('queryResult').get('parameters').get('address')
+        
+        if premise_ == '': premise_ = 'Hospital'
+        print(premise_)
+
+        #for testing only. Pick 5th from hospital/clinic list
+        premise_query = list(hospitalList.objects.filter(Type=premise_))[5]
+        result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query.address, departure_time=datetime.now())
+
+        if result['rows'][0]['elements'][0]['status'] == 'NOT_FOUND':
+            text1 = 'Route not found. Perhaps check your postal code?'
+        else:
+            distance_ = result['rows'][0]['elements'][0]['distance']['value']/1000 #convert m to km
+            duration_ = result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
+            text1 = f"Nearest {premise_} to you is at {premise_query.Name}. You are {distance_:.1f}km away from it, it will take approximately {duration_:.0f}min for you to reach there if you depart by car now."
+
     # --------------------------#
     # SYNC  INTENT              #
     # --------------------------#
     if intent == "sync":
-        # try:
-        ss = statusScrapper()
-        ss.start()
-        ns = newsScrapper()
-        ns.start()
-        text1 = "Sync/update completed."
+        try:
+            ss = statusScrapper()
+            ss.start()
+            ns = newsScrapper()
+            ns.start()
+            text1 = "Sync/update completed."
         
-    #     except:
-    #         text1="Error occurred. Contact admin to debug."
+        except:
+            text1="Error occurred. Contact admin to debug."
 
-    # print(text1)
+
+
     dialogflow_response = DialogflowResponse(text1)
     reply = dialogflow_response.get_final_response()
 

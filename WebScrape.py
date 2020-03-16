@@ -7,7 +7,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
 #os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 django.setup()
 
-from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines
+from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
 import pandas as pd
 from requests import get
 from bs4 import BeautifulSoup
