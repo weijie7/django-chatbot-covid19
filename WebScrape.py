@@ -75,13 +75,10 @@ class newsScrapper():
     def start(self):
         url = 'https://www.moh.gov.sg/covid-19'
         response = get(url)
+        print(response.status_code)
 
         soup = BeautifulSoup(response.text, "html.parser")
-        a = soup.findAll('table')
-        print(a)
-        a = a[2]
-        print(a)
-        a = a.findAll('tr')
+        a = soup.findAll('table')[2].findAll('tr')
         print(a)
 
         for i, news in enumerate(a[1:]):
