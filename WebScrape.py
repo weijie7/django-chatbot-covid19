@@ -79,7 +79,6 @@ class newsScrapper():
 
         soup = BeautifulSoup(response.text, "html.parser")
         a = soup.findAll('table')[2].findAll('tr')
-        print(a)
 
         for i, news in enumerate(a[1:]):
             dict = {
