@@ -100,15 +100,15 @@ def webhook(request):
     # SYNC  INTENT              #
     # --------------------------#
     if intent == "sync":
-        try:
-            ss = statusScrapper()
-            ss.start()
-            ns = newsScrapper()
-            ns.start()
-            text1 = "Sync/update completed."
+        # try:
+        ss = statusScrapper()
+        ss.start()
+        ns = newsScrapper()
+        ns.start()
+        text1 = "Sync/update completed."
         
-        except:
-            text1="Error occurred. Contact admin to debug."
+        # except:
+        #     text1="Error occurred. Contact admin to debug."
 
 
 
