@@ -1,7 +1,7 @@
 django==2.2.10
-Beautifulsoup4
-requests
-pandas
+beautifulsoup4==4.8.2
+requests==2.22.0
+pandas==1.0.1
 pydialogflow-fulfillment
 googlemaps
 gunicorn
