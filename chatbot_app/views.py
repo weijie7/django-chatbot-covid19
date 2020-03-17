@@ -12,6 +12,7 @@ from WebScrape import statusScrapper, newsScrapper
 from django import db
 import googlemaps
 from datetime import datetime
+from math import radians, sin, cos, acos
 gmaps = googlemaps.Client(key = 'AIzaSyCpqFU-7MTe4GSgFzuobfscIYm1E-tLrgY')
 
 
@@ -83,18 +84,53 @@ def webhook(request):
         address_ = req.get('queryResult').get('parameters').get('address')
         
         if premise_ == '': premise_ = 'Hospital'
-        print(premise_)
 
         #for testing only. Pick 5th from hospital/clinic list
-        premise_query = list(hospitalList.objects.filter(Type=premise_))[5]
-        result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query.address, departure_time=datetime.now())
+        premise_query = list(hospitalList.objects.filter(Type=premise_))
+        #converting user-input starting point to geo-code lat & long
+        geocode_result = gmaps.geocode(str(address_) + ' Singapore')
 
-        if result['rows'][0]['elements'][0]['status'] == 'NOT_FOUND':
+        if geocode_result==[]:
             text1 = 'Route not found. Perhaps check your postal code?'
         else:
-            distance_ = result['rows'][0]['elements'][0]['distance']['value']/1000 #convert m to km
-            duration_ = result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
-            text1 = f"Nearest {premise_} to you is at {premise_query.Name}. You are {distance_:.1f}km away from it, it will take approximately {duration_:.0f}min for you to reach there if you depart by car now."
+            dist_list = [] 
+            slat = radians(geocode_result[0]['geometry']['location']['lat'])
+            slng = radians(geocode_result[0]['geometry']['location']['lng'])
+            for item in premise_query:
+                elat = radians(item.lat)
+                elng = radians(item.lng)
+                dist_list.append(6371.01 * acos(sin(slat)*sin(elat) + cos(slat)*cos(elat)*cos(slng - elng))) # this is original open list, for reference
+            
+            open_list = dist_list.copy()
+            min_index = dist_list.index(min(dist_list)) #for search, find the min distance
+            distance_result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query[min_index].address, departure_time=datetime.now())
+            distance_gmap = distance_result['rows'][0]['elements'][0]['distance']['value']/1000 #convert m to km, this will be true distance
+            duration_gmap = distance_result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
+            solution = min_index #index of solution
+            open_list.pop(min_index)
+            print('original solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
+
+            #check if open list has lesser distance than current one
+            counter = 0
+            while min(open_list) < distance_gmap:
+                print('attempt', counter+1)
+                new_min_index = dist_list.index(min(open_list))
+                distance_result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query[new_min_index].address, departure_time=datetime.now())
+                new_distance_gmap = distance_result['rows'][0]['elements'][0]['distance']['value']/1000
+                new_duration_gmap = distance_result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
+                open_list.remove(min(open_list))
+                print('new solution', premise_query[new_min_index].Name, 'absolute distance is ', dist_list[new_min_index], 'google final distance is ', new_distance_gmap)
+                if new_distance_gmap < distance_gmap:
+                    solution = new_min_index #index of solution
+                    distance_gmap = new_distance_gmap
+                    duration_gmap = new_duration_gmap
+                if open_list == []:
+                    break
+                counter+=1
+                print('current solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
+
+        text1 = f"Nearest {premise_} to you is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
+
 
     # --------------------------#
     # SYNC  INTENT              #

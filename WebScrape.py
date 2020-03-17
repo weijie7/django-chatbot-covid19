@@ -27,7 +27,7 @@ class statusScrapper():
 
         url = 'https://www.worldometers.info/coronavirus/'
         html_soup = get(url)
-        print("MOH website response stataus: ",html_soup.status_code)
+        print("Worldometer website response stataus: ",html_soup.status_code)
         html_soup = BeautifulSoup(html_soup.text, 'html.parser')
         LastUpdatetext = html_soup.find('div', class_='content-inner').find_all('div')[1].getText()
         table_rows = html_soup.find('table', attrs={'id': 'main_table_countries'}).find_all('tr')
