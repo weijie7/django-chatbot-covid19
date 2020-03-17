@@ -32,7 +32,7 @@ def webhook(request):
     # INFECTION STATUS INTENT   #
     # --------------------------#
     if intent == "infection-status-covid":
-        country = req.get('queryResult').get('parameters').get('country-defined')
+        country = req.get('queryResult').get('parameters').get('country-defined').lower()
         casestatus = req.get('queryResult').get('parameters').get('CaseStatus')
 
         pd_table = pd.DataFrame(list(globalStatus.objects.all().values()))
