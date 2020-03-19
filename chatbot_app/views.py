@@ -13,7 +13,6 @@ from django import db
 import googlemaps
 from datetime import datetime
 from math import radians, sin, cos, acos
-key_ = input('Enter your key:')
 gmaps = googlemaps.Client(key = key_)
 
 
