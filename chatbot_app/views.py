@@ -82,10 +82,13 @@ def webhook(request):
     # Distance to Hospital      #
     # --------------------------#
     if intent == "nearest-hospital-covid" or intent == "treatment-covid.yes.address":
-        premise_ = req.get('queryResult').get('parameters').get('healthcare').capitalize()
+        premise_ = req.get('queryResult').get('parameters').get('healthcare')
         address_ = req.get('queryResult').get('parameters').get('address')
         
-        if premise_ == '': premise_ = 'Hospital'
+        if premise_ == '': 
+            premise_ = 'Hospital'
+        else:
+            premise_ = premise_.capitalize()
 
         #for testing only. Pick 5th from hospital/clinic list
         premise_query = list(hospitalList.objects.filter(Type=premise_))
