@@ -13,7 +13,7 @@ from django import db
 import googlemaps
 from datetime import datetime
 from math import radians, sin, cos, acos
-from boto.s3.connection import S3Connection
+import os
 key_ = os.environ['key_']
 gmaps = googlemaps.Client(key = key_)
 
