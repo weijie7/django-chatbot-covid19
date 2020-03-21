@@ -99,7 +99,7 @@ def webhook(request):
         geocode_result = gmaps.geocode(str(address_) + ' Singapore')
 
         if geocode_result==[]:
-            text1 = 'Route not found. Perhaps check your postal code?'
+            text1 = 'Route not found. Perhaps check your address or postal code?'
         else:
             dist_list = [] 
             slat = radians(geocode_result[0]['geometry']['location']['lat'])
@@ -137,7 +137,7 @@ def webhook(request):
                 counter+=1
                 print('current solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
 
-        text1 = f"Nearest {premise_} to you is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
+        text1 = f"Your location is {address_}, Singapore. Nearest {premise_} to you that I found is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
 
 
     # --------------------------#
