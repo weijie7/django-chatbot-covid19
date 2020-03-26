@@ -79,7 +79,7 @@ class newsScrapper():
         print("MOH website response stataus: ",response.status_code)
 
         soup = BeautifulSoup(response.text, "html.parser")
-        a = soup.findAll('table')[3].findAll('tr')
+        a = soup.findAll('table')[8].findAll('tr')
 
         for i, news in enumerate(a[1:]):
             dict = {
