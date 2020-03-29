@@ -16,8 +16,6 @@ import googlemaps
 import json
 
 
-#gmaps = googlemaps.Client(key = 'AIzaSyCpqFU-7MTe4GSgFzuobfscIYm1E-tLrgY')
-
 df = pd.read_csv(r'hospital & polyclinic.csv')
 df['address'] = None
 df['lat'] = None
