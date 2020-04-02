@@ -2,8 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from pydialogflow_fulfillment import DialogflowResponse
-from pydialogflow_fulfillment.response import SimpleResponse, OutputContexts
 from bs4 import BeautifulSoup
 from requests import get
 import pandas as pd
@@ -14,6 +12,7 @@ import googlemaps
 from datetime import datetime
 from math import radians, sin, cos, acos
 import os
+from df_response_lib import *
 key_ = os.environ['key_']
 gmaps = googlemaps.Client(key = key_)
 
@@ -62,7 +61,16 @@ def webhook(request):
 
         #More info: https://github.com/Emmarex/dialogflow-fulfillment-python
         text1 = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'
-   
+        
+        telegram = telegram_response()
+        tel_text = telegram.text_response([text1, text1, False])
+        tel_img = telegram.image_response("https://covid-chatbot.herokuapp.com/static/plots/worldwide.png")
+
+        ff_response = fulfillment_response() #create class
+        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
+        ff_add = ff_response.fulfillment_messages([tel_text, tel_img])
+        reply = ff_response.main_response(ff_text, ff_add)
+
     # --------------------------#
     # HEADLINE NEWS INTENT      #
     # --------------------------#
@@ -76,7 +84,14 @@ def webhook(request):
             metatext = metatext + f"{date_} \n{title_} \n{link_}\n\n"
         
         text1 = metatext + "For more info: https://www.moh.gov.sg/covid-19"
-            
+
+        telegram = telegram_response()
+        tel_text = telegram.text_response([text1, text1, False])
+
+        ff_response = fulfillment_response() #create class
+        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
+        ff_add = ff_response.fulfillment_messages([tel_text])
+        reply = ff_response.main_response(ff_text, ff_add)
     
     # --------------------------#
     # Distance to Hospital      #
@@ -138,7 +153,16 @@ def webhook(request):
                 print('current solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
 
         text1 = f"Your location is {address_}, Singapore. Nearest {premise_} to you that I found is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
+        map_url = f"https://www.google.com/maps/dir/{address_.replace(' ','+')}/{premise_query[solution].Name.replace(' ','+')}"
 
+        telegram = telegram_response()
+        tel_text = telegram.text_response([text1, text1, False])
+        tel_text2 = telegram.text_response([map_url, map_url, False])
+
+        ff_response = fulfillment_response() #create class
+        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
+        ff_add = ff_response.fulfillment_messages([tel_text,tel_text2])
+        reply = ff_response.main_response(ff_text, ff_add)
 
     # --------------------------#
     # SYNC  INTENT              #
@@ -154,13 +178,9 @@ def webhook(request):
         except:
             text1="Error occurred. Contact admin to debug."
 
-
-
-    dialogflow_response = DialogflowResponse(text1)
-    reply = dialogflow_response.get_final_response()
-
     db.connections.close_all()
     # return generated response
-    return HttpResponse(reply, content_type='application/json; charset=utf-8')
+    return JsonResponse(reply, safe=False)
+
 
 db.connections.close_all()
