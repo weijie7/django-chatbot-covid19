@@ -153,7 +153,7 @@ def webhook(request):
                 print('current solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
 
         text1 = f"Your location is {address_}, Singapore. Nearest {premise_} to you that I found is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
-        map_url = f"https://www.google.com/maps/dir/{address_.replace(' ','+')}/{premise_query[solution].Name.replace(' ','+')}"
+        map_url = f"Click link for instant direction: https://www.google.com/maps/dir/{str(address_.replace(' ','+'))+'+Singapore'}/{premise_query[solution].Name.replace(' ','+')}"
 
         telegram = telegram_response()
         tel_text = telegram.text_response([text1, text1, False])
