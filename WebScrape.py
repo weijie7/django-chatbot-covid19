@@ -56,8 +56,9 @@ class statusScrapper():
         # Plot Charts
         fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(10,6), sharex=True)
         fig.suptitle(f'Infected & Death Cases Trend of Top 15 Countries as of {LastUpdatetext.split("Last updated: ")[1]}', fontsize= 18)
-        pd_table[:15].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12)
-        pd_table[:15].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn')
+        pd_table.sort_values(by='diagnosed',ascending=False, inplace=True)
+        pd_table[1:16].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12)
+        pd_table[1:16].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn')
         axs[0].set_ylabel('Total Infected')
         axs[1].set_ylabel('Total Death')
         axs[1].set_xlabel('Countries')
