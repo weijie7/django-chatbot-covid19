@@ -54,15 +54,22 @@ class statusScrapper():
         model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active']) for i in global_dict]
 
         # Plot Charts
+        pd_table['death_rate'] = pd_table['death']*100/pd_table['diagnosed']
         fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(10,6), sharex=True)
         fig.suptitle(f'Infected & Death Cases Trend of Top 15 Countries as of {LastUpdatetext.split("Last updated: ")[1]}', fontsize= 18)
         pd_table.sort_values(by='diagnosed',ascending=False, inplace=True)
-        pd_table[1:16].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12)
-        pd_table[1:16].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn')
-        axs[0].set_ylabel('Total Infected')
-        axs[1].set_ylabel('Total Death')
-        axs[1].set_xlabel('Countries')
-        plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+        ax1 = pd_table[1:16].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12, grid=True)
+        ax2 = pd_table[1:16].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn', grid=True)
+        ax3 = pd_table[1:16].plot.line(x='country', y='death_rate', ax = axs[1], fontsize=12, cmap = 'Dark2_r', grid=True, secondary_y=True, marker = 'o', linewidth=2)
+        ax1.set_ylabel('Total Infected')
+        ax2.set_ylabel('Total Death')
+        ax2.set_xlabel('Countries')
+        ax3.set_ylabel('Death Rate (%)')
+        plt.tick_params(labelbottom=True)
+        for tick in ax2.get_xticklabels():
+            tick.set_rotation(45)
+        ax3.set_xlim(-0.5,14.5)
+        plt.savefig('try.png',bbox_inches = "tight")
 
 
         try:
