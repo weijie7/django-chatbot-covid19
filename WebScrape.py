@@ -69,6 +69,7 @@ class statusScrapper():
         for tick in ax2.get_xticklabels():
             tick.set_rotation(45)
         ax3.set_xlim(-0.5,14.5)
+        ax3.set_yticks(np.linspace(ax3.get_yticks()[0], ax3.get_yticks()[-1], len(ax2.get_yticks())))
         plt.savefig('try.png',bbox_inches = "tight")
 
 
