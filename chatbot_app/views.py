@@ -14,8 +14,8 @@ import googlemaps
 from datetime import datetime
 from math import radians, sin, cos, acos
 import os
-key_ = os.environ['key_']
-gmaps = googlemaps.Client(key = key_)
+#key_ = os.environ['key_']
+#gmaps = googlemaps.Client(key = key_)
 
 
 # Create your views here.

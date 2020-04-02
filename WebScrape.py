@@ -12,6 +12,8 @@ import pandas as pd
 from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime
+import numpy as np
+import matplotlib.pyplot as plt
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
@@ -50,6 +52,17 @@ class statusScrapper():
         pd_table = pd.DataFrame(res, columns=col)
         global_dict = pd_table.to_dict('records')
         model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active']) for i in global_dict]
+
+        # Plot Charts
+        fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(10,6), sharex=True)
+        fig.suptitle(f'Infected & Death Cases Trend of Top 15 Countries as of {LastUpdatetext.split("Last updated: ")[1]}', fontsize= 18)
+        pd_table[:15].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12)
+        pd_table[:15].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn')
+        axs[0].set_ylabel('Total Infected')
+        axs[1].set_ylabel('Total Death')
+        axs[1].set_xlabel('Countries')
+        plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+
 
         try:
             globalStatus.objects.bulk_create(model_instance)
@@ -93,6 +106,9 @@ class newsScrapper():
                 self.success = 1
             except:
                 print(f'Title {i+1} failed to update or data already exist')
+
+
+
 
 if __name__ == "__main__":
     ss = statusScrapper()
