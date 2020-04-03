@@ -178,6 +178,15 @@ def webhook(request):
         except:
             text1="Error occurred. Contact admin to debug."
 
+        telegram = telegram_response()
+        tel_text = telegram.text_response([text1, text1, False])
+
+        ff_response = fulfillment_response() #create class
+        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
+        ff_add = ff_response.fulfillment_messages([tel_text])
+        reply = ff_response.main_response(ff_text)
+
+
     db.connections.close_all()
     # return generated response
     return JsonResponse(reply, safe=False)
