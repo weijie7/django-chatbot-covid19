@@ -13,6 +13,7 @@ from datetime import datetime
 from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
+import random
 key_ = os.environ['key_']
 gmaps = googlemaps.Client(key = key_)
 
@@ -64,7 +65,8 @@ def webhook(request):
         
         telegram = telegram_response()
         tel_text = telegram.text_response([text1, text1, False])
-        tel_img = telegram.image_response("https://covid-chatbot.herokuapp.com/static/plots/worldwide.png")
+        vkey = random.randrange(1,99999999,1)
+        tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/worldwide.png?v={vkey}")
 
         ff_response = fulfillment_response() #create class
         ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
