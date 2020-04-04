@@ -58,9 +58,9 @@ class statusScrapper():
         fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(10,6), sharex=True)
         fig.suptitle(f'Infected & Death Cases Trend of Top 15 Countries as of {LastUpdatetext.split("Last updated: ")[1]}', fontsize= 18)
         pd_table.sort_values(by='diagnosed',ascending=False, inplace=True)
-        ax1 = pd_table[1:16].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12, grid=True)
-        ax2 = pd_table[1:16].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn', grid=True)
-        ax3 = pd_table[1:16].plot.line(x='country', y='death_rate', ax = axs[1], fontsize=12, cmap = 'Dark2_r', grid=True, secondary_y=True, marker = 'o', linewidth=2)
+        ax1 = pd_table[2:17].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12, grid=True)
+        ax2 = pd_table[2:17].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn', grid=True)
+        ax3 = pd_table[2:17].plot.line(x='country', y='death_rate', ax = axs[1], fontsize=12, cmap = 'Dark2_r', grid=True, secondary_y=True, marker = 'o', linewidth=2)
         ax1.set_ylabel('Total Infected')
         ax2.set_ylabel('Total Death')
         ax2.set_xlabel('Countries')
@@ -69,7 +69,8 @@ class statusScrapper():
         for tick in ax2.get_xticklabels():
             tick.set_rotation(45)
         ax3.set_xlim(-0.5,14.5)
-        ax3.set_yticks(np.linspace(ax3.get_yticks()[0], ax3.get_yticks()[-1], len(ax2.get_yticks())+1))
+        ax3.set_yticks(np.linspace(ax3.get_yticks()[0], round(ax3.get_yticks()[-1]), 6))
+        ax2.set_yticks(np.linspace(ax2.get_yticks()[0], round(ax2.get_yticks()[-1],-3), 6))
         plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
 
 

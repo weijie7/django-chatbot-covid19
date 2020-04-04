@@ -15,15 +15,15 @@ from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
 import random
-#key_ = os.environ['key_']
-#gmaps = googlemaps.Client(key = key_)
+key_ = os.environ['key_']
+gmaps = googlemaps.Client(key = key_)
 
 
 # Create your views here.
 
 def index(request):
     image_list=[]
-    for root, dirs, files in os.walk(settings.STATICFILES_DIRS):
+    for root, dirs, files in os.walk(settings.STATIC_ROOT):
         for file in files:
             if file.endswith(".png"):
                 image_list.append(file)
