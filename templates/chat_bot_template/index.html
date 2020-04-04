@@ -14,8 +14,10 @@
         
         <h1>For uploading graphs:</h1>
         <br>
-
-        <img src="{% static "plots/worldwide.png" %}" alt="Picture not found">
+        {% for i in imgs %}
+        <p>{{i}}</p>
+          <img src="{% static 'plots/'%}{{i}}" alt="Picture not found">
+        {% endfor %}
         
     </body>
 </html>

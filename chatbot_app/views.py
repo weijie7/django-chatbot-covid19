@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import json
 from bs4 import BeautifulSoup
 from requests import get
@@ -14,15 +15,19 @@ from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
 import random
-key_ = os.environ['key_']
-gmaps = googlemaps.Client(key = key_)
+#key_ = os.environ['key_']
+#gmaps = googlemaps.Client(key = key_)
 
 
 # Create your views here.
 
 def index(request):
-    my_dict = {'variable': "Hello World"}
-    return render(request, r'chat_bot_template/index.html', context= my_dict)
+    image_list=[]
+    for root, dirs, files in os.walk(settings.STATICFILES_DIRS):
+        for file in files:
+            if file.endswith(".png"):
+                image_list.append(file)
+    return render(request, r'chat_bot_template/index.html', context= {'imgs' : image_list})
 
 @csrf_exempt
 def webhook(request):
