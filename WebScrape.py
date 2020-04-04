@@ -26,8 +26,6 @@ class statusScrapper():
         self.update_success = 0
 
     def start(self):
-        globalLastUpdate.objects.all().delete()
-        globalStatus.objects.all().delete()
 
         url = 'https://www.worldometers.info/coronavirus/'
         html_soup = get(url)
@@ -141,6 +139,8 @@ class statusScrapper():
 
         print('Graphs Job Completed')
 
+        globalLastUpdate.objects.all().delete()
+        globalStatus.objects.all().delete()
         try:
             globalStatus.objects.bulk_create(model_instance)
             print('Update globalStatus complete!')
@@ -154,7 +154,6 @@ class statusScrapper():
             self.update_success = 1
         except:
             print('Error occurred. Update globalLastUpdate unsuccessful.')
-
 
 ###############
 
