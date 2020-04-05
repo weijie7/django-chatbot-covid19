@@ -116,6 +116,7 @@ class statusScrapper():
             plt.savefig(f'static/plots/{i.lower().replace("*","")}.png',bbox_inches = "tight")
             ax.cla()
             ax2.cla()
+            print(f"graph {i} plotted")
 
         # US ONLY
         
