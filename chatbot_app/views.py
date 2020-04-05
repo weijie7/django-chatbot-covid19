@@ -71,7 +71,8 @@ def webhook(request):
         telegram = telegram_response()
         tel_text = telegram.text_response([text1, text1, False])
         vkey = random.randrange(1,99999999,1)
-        tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/{country}.png?v={vkey}")
+        #tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/{country}.png?v={vkey}")
+        tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/worldwide.png?v={vkey}")
 
         ff_response = fulfillment_response() #create class
         ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
