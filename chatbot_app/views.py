@@ -15,6 +15,9 @@ from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
 import random
+from rq import Queue
+from worker import conn
+from Generate_graph import plot_it
 key_ = os.environ['key_']
 gmaps = googlemaps.Client(key = key_)
 
@@ -181,8 +184,10 @@ def webhook(request):
             ss.start()
             ns = newsScrapper()
             ns.start()
+            q = Queue(connection = conn)
+            comment = q.enqueue(plot_it)
             text1 = "Sync/update completed."
-        
+
         except:
             text1="Error occurred. Contact admin to debug."
 
@@ -201,3 +206,6 @@ def webhook(request):
 
 
 db.connections.close_all()
+
+
+
