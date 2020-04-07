@@ -15,8 +15,6 @@ from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
 import random
-from rq import Queue
-from worker import conn
 from Generate_graph import plot_it
 key_ = os.environ['key_']
 gmaps = googlemaps.Client(key = key_)
@@ -185,8 +183,6 @@ def webhook(request):
             ns = newsScrapper()
             ns.start()
             plot_it()
-            q = Queue(connection = conn, default_timeout=5000)
-            comment = q.enqueue(plot_it)
             text1 = "Sync/update completed."
 
         except:
@@ -210,3 +206,9 @@ db.connections.close_all()
 
 
 
+# If want to run something in worker queue:
+# from rq import Queue
+# from worker import conn
+# from Generate_graph import plot_it
+#     q = Queue(connection = conn, default_timeout=5000)
+#     comment = q.enqueue(plot_it)
