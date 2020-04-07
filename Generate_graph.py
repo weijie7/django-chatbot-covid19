@@ -42,7 +42,7 @@ def plot_it():
 
     sns.set(style="whitegrid")
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(12,6), sharex=True)
-    for i in inf_global_grp.columns:
+    for i in inf_global_grp.columns[0:10]:
         df = inf_global_grp[i]
         df.index = pd.to_datetime(df.index)
         df2 = dead_global_grp[i]

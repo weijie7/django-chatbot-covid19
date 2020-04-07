@@ -184,7 +184,8 @@ def webhook(request):
             ss.start()
             ns = newsScrapper()
             ns.start()
-            q = Queue(connection = conn)
+            plot_it()
+            q = Queue(connection = conn, default_timeout=5000)
             comment = q.enqueue(plot_it)
             text1 = "Sync/update completed."
 
