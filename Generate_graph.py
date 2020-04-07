@@ -83,8 +83,3 @@ def plot_it():
     comment = 'Graphs Job Completed'
     return comment
 
-from rq import Queue
-from worker import conn
-
-q = Queue(connection = conn)
-comment = q.enqueue(plot_it)
