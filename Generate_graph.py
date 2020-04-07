@@ -1,11 +1,11 @@
-import sys
-import django
-import os
-os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
-# setting can be found in wsgi.py folder in pycache
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
-django.setup()
+# import sys
+# import django
+# import os
+# os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
+# # setting can be found in wsgi.py folder in pycache
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
+# #os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
+# django.setup()
 
 import pandas as pd
 from datetime import datetime
