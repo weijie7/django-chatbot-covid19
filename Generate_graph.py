@@ -1,11 +1,11 @@
-# import sys
-# import django
-# import os
-# os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
-# # setting can be found in wsgi.py folder in pycache
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
-# #os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
-# django.setup()
+import sys
+import django
+import os
+os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
+# setting can be found in wsgi.py folder in pycache
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
+django.setup()
 
 import pandas as pd
 from datetime import datetime
@@ -56,6 +56,7 @@ for i in inf_global_grp.columns:
     ax.figure.legend(['Total Diagnosed', 'Total Death'])
     fig.autofmt_xdate()
     plt.savefig(f'static/plots/{i.lower().replace("*","")}.png',bbox_inches = "tight")
+    plt.savefig(f'staticfiles/plots/{i.lower().replace("*","")}.png',bbox_inches = "tight")
     ax.cla()
     ax2.cla()
     print(f"graph {i} plotted")
@@ -77,7 +78,7 @@ for i in inf_us_grp.columns:
     ax.set_xlabel('Date (past 30 days)')
     ax.figure.legend(['Total Diagnosed', 'Total Death'])
     fig.autofmt_xdate()
-    plt.savefig(f'static/plots/usa.png',bbox_inches = "tight")
+    plt.savefig('static/plots/usa.png',bbox_inches = "tight")
     
 
 print('Graphs Job Completed')

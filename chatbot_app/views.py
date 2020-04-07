@@ -15,8 +15,8 @@ from math import radians, sin, cos, acos
 import os
 from df_response_lib import *
 import random
-#key_ = os.environ['key_']
-#gmaps = googlemaps.Client(key = key_)
+key_ = os.environ['key_']
+gmaps = googlemaps.Client(key = key_)
 
 
 # Create your views here.
