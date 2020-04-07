@@ -72,6 +72,7 @@ class statusScrapper():
         ax3.set_yticks(np.linspace(ax3.get_yticks()[0], round(ax3.get_yticks()[-1]), 6))
         ax2.set_yticks(np.linspace(ax2.get_yticks()[0], round(ax2.get_yticks()[-1],-3), 6))
         plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+        plt.savefig('static/plots/worldwide2_fake.png',bbox_inches = "tight")
 
         # #plot individual country charts
         # inf_link = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
