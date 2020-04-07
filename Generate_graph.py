@@ -43,9 +43,9 @@ class plotGraphs():
         dead_pr_grp = dead_us[dead_us['Province_State'] == 'Puerto Rico'].groupby(by='Province_State').sum().T
         dead_global_grp = dead_global.groupby(by='Country/Region').sum().T
 
+        sns.set(style="whitegrid")
         fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(12,6), sharex=True)
         for i in inf_global_grp.columns:
-            sns.set(style="whitegrid")
             df = inf_global_grp[i]
             df.index = pd.to_datetime(df.index)
             df2 = dead_global_grp[i]
