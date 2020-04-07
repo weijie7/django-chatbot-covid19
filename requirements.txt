@@ -9,3 +9,5 @@ matplotlib
 numpy
 whitenoise
 seaborn
+rq
+redis

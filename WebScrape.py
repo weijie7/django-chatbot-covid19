@@ -122,7 +122,6 @@ class statusScrapper():
         # # US ONLY
         
         for i in inf_us_grp.columns:
-            sns.set(style="whitegrid")
             df = inf_us_grp[i]
             df.index = pd.to_datetime(df.index)
             df2 = dead_us_grp[i]
