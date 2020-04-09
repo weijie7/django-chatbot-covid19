@@ -2,22 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-import json
-from bs4 import BeautifulSoup
-from requests import get
-import pandas as pd
-from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
-from WebScrape import statusScrapper, newsScrapper
-from django import db
-import googlemaps
-from datetime import datetime
-from math import radians, sin, cos, acos
 import os
-from df_response_lib import *
-import random
-from Generate_graph import plot_it
-key_ = os.environ['key_']
-gmaps = googlemaps.Client(key = key_)
+
+from chatbot_app.modules.features import Feature
+#key_ = os.environ['AIzaSyCpqFU-7MTe4GSgFzuobfscIYm1E-tLrgY']
+#gmaps = googlemaps.Client(key = key_)
 
 
 # Create your views here.
@@ -30,185 +19,11 @@ def index(request):
                 image_list.append(file)
     return render(request, r'chat_bot_template/index.html', context= {'imgs' : image_list})
 
+
 @csrf_exempt
 def webhook(request):
+    # run Feature library
+    feature = Feature(request)
+    # start backend function
+    return feature.main()
     # build a request object
-    req = json.loads(request.body)
-    # get action from json
-    intent = req.get('queryResult').get('intent').get('displayName')
-
-    # --------------------------#
-    # INFECTION STATUS INTENT   #
-    # --------------------------#
-    if intent == "infection-status-covid":
-        country = req.get('queryResult').get('parameters').get('country-defined').lower()
-        casestatus = req.get('queryResult').get('parameters').get('CaseStatus')
-
-        pd_table = pd.DataFrame(list(globalStatus.objects.all().values()))
-        LastUpdate = list(globalLastUpdate.objects.all().values('last_update'))[0]['last_update']
-
-        try:
-            diagnose_ = pd_table[pd_table['country'] == country]['diagnosed'].iloc[0]
-            death_ = pd_table[pd_table['country'] == country]['death'].iloc[0]
-            discharged_ = pd_table[pd_table['country'] == country]['discharged'].iloc[0]
-            active_ = pd_table[pd_table['country'] == country]['active'].iloc[0]
-            critical_ = pd_table[pd_table['country'] == country]['critical'].iloc[0]
-            new_case_ = pd_table[pd_table['country'] == country]['new_cases'].iloc[0]
-            new_death_ = pd_table[pd_table['country'] == country]['new_death'].iloc[0]
-            
-        except:
-            country = "worldwide"
-            diagnose_ = pd_table[pd_table['country'] == 'total:']['diagnosed'].iloc[0]
-            death_ = pd_table[pd_table['country'] == 'total:']['death'].iloc[0]
-            discharged_ = pd_table[pd_table['country'] == 'total:']['discharged'].iloc[0]
-            active_ = pd_table[pd_table['country'] == 'total:']['active'].iloc[0]
-            critical_ = pd_table[pd_table['country'] == 'total:']['critical'].iloc[0]
-            new_case_ = pd_table[pd_table['country'] == 'total:']['new_cases'].iloc[0]
-            new_death_ = pd_table[pd_table['country'] == 'total:']['new_death'].iloc[0]
-
-        #More info: https://github.com/Emmarex/dialogflow-fulfillment-python
-        text1 = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'
-        
-        telegram = telegram_response()
-        tel_text = telegram.text_response([text1, text1, False])
-        vkey = random.randrange(1,99999999,1)
-        tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/{country}.png?v={vkey}")
-        #tel_img = telegram.image_response(f"https://covid-chatbot.herokuapp.com/static/plots/worldwide.png?v={vkey}")
-
-        ff_response = fulfillment_response() #create class
-        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
-        ff_add = ff_response.fulfillment_messages([tel_text, tel_img])
-        reply = ff_response.main_response(ff_text, ff_add)
-
-    # --------------------------#
-    # HEADLINE NEWS INTENT      #
-    # --------------------------#
-    if intent == "latest-news-covid":
-        news_list = list(MOHHeadlines.objects.order_by('-news_date').values())
-        metatext = "Below are the top 3 latest news:\n"
-        for news in news_list[:3]: #top3
-            date_ = news['news_date'].strftime('%d %b, %Y')
-            title_ = news['news_title']
-            link_ = news['news_link']
-            metatext = metatext + f"{date_} \n{title_} \n{link_}\n\n"
-        
-        text1 = metatext + "For more info: https://www.moh.gov.sg/covid-19"
-
-        telegram = telegram_response()
-        tel_text = telegram.text_response([text1, text1, False])
-
-        ff_response = fulfillment_response() #create class
-        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
-        ff_add = ff_response.fulfillment_messages([tel_text])
-        reply = ff_response.main_response(ff_text, ff_add)
-    
-    # --------------------------#
-    # Distance to Hospital      #
-    # --------------------------#
-    if intent == "nearest-hospital-covid" or intent == "treatment-covid.yes.address":
-        address_ = req.get('queryResult').get('parameters').get('address')
-        
-        try:
-            premise_ = req.get('queryResult').get('parameters').get('healthcare')
-            if premise_ == '': 
-                premise_ = 'Hospital'
-            else:
-                premise_ = premise_.capitalize()
-        except:
-            premise_ = 'Hospital'
-
-        #for testing only. Pick 5th from hospital/clinic list
-        premise_query = list(hospitalList.objects.filter(Type=premise_))
-        #converting user-input starting point to geo-code lat & long
-        geocode_result = gmaps.geocode(str(address_) + ' Singapore')
-
-        if geocode_result==[]:
-            text1 = 'Route not found. Perhaps check your address or postal code?'
-        else:
-            dist_list = [] 
-            slat = radians(geocode_result[0]['geometry']['location']['lat'])
-            slng = radians(geocode_result[0]['geometry']['location']['lng'])
-            for item in premise_query:
-                elat = radians(item.lat)
-                elng = radians(item.lng)
-                dist_list.append(6371.01 * acos(sin(slat)*sin(elat) + cos(slat)*cos(elat)*cos(slng - elng))) # this is original open list, for reference
-            
-            open_list = dist_list.copy()
-            min_index = dist_list.index(min(dist_list)) #for search, find the min distance
-            distance_result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query[min_index].address, departure_time=datetime.now())
-            distance_gmap = distance_result['rows'][0]['elements'][0]['distance']['value']/1000 #convert m to km, this will be true distance
-            duration_gmap = distance_result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
-            solution = min_index #index of solution
-            open_list.pop(min_index)
-            print('original solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
-
-            #check if open list has lesser distance than current one
-            counter = 0
-            while min(open_list) < distance_gmap:
-                print('attempt', counter+1)
-                new_min_index = dist_list.index(min(open_list))
-                distance_result = gmaps.distance_matrix(str(address_) + ' Singapore', premise_query[new_min_index].address, departure_time=datetime.now())
-                new_distance_gmap = distance_result['rows'][0]['elements'][0]['distance']['value']/1000
-                new_duration_gmap = distance_result['rows'][0]['elements'][0]['duration']['value']/60 #convert sec to min
-                open_list.remove(min(open_list))
-                print('new solution', premise_query[new_min_index].Name, 'absolute distance is ', dist_list[new_min_index], 'google final distance is ', new_distance_gmap)
-                if new_distance_gmap < distance_gmap:
-                    solution = new_min_index #index of solution
-                    distance_gmap = new_distance_gmap
-                    duration_gmap = new_duration_gmap
-                if open_list == []:
-                    break
-                counter+=1
-                print('current solution', premise_query[solution].Name, 'absolute distance is ', dist_list[solution], 'google final distance is ', distance_gmap)
-
-        text1 = f"Your location is {address_}, Singapore. Nearest {premise_} to you that I found is at {premise_query[solution].Name}. You are {distance_gmap:.1f}km away from it, it will take approximately {duration_gmap:.0f}min for you to reach there if you depart by car now."
-        map_url = f"Click link for instant direction: https://www.google.com/maps/dir/{str(address_.replace(' ','+'))+'+Singapore'}/{premise_query[solution].Name.replace(' ','+')}"
-
-        telegram = telegram_response()
-        tel_text = telegram.text_response([text1, text1, False])
-        tel_text2 = telegram.text_response([map_url, map_url, False])
-
-        ff_response = fulfillment_response() #create class
-        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
-        ff_add = ff_response.fulfillment_messages([tel_text,tel_text2])
-        reply = ff_response.main_response(ff_text, ff_add)
-
-    # --------------------------#
-    # SYNC  INTENT              #
-    # --------------------------#
-    if intent == "sync":
-        try:
-            ss = statusScrapper()
-            ss.start()
-            ns = newsScrapper()
-            ns.start()
-            plot_it()
-            text1 = "Sync/update completed."
-
-        except:
-            text1="Error occurred. Contact admin to debug."
-
-        telegram = telegram_response()
-        tel_text = telegram.text_response([text1, text1, False])
-
-        ff_response = fulfillment_response() #create class
-        ff_text = ff_response.fulfillment_text(text1) #insert ff text as first response, text only hence use fulfillment_text
-        ff_add = ff_response.fulfillment_messages([tel_text])
-        reply = ff_response.main_response(ff_text)
-
-
-    db.connections.close_all()
-    # return generated response
-    return JsonResponse(reply, safe=False)
-
-
-db.connections.close_all()
-
-
-
-# If want to run something in worker queue:
-# from rq import Queue
-# from worker import conn
-# from Generate_graph import plot_it
-#     q = Queue(connection = conn, default_timeout=5000)
-#     comment = q.enqueue(plot_it)

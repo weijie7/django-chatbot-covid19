@@ -1,0 +1,13 @@
+https://stackoverflow.com/questions/26716616/convert-a-pandas-dataframe-to-a-dictionary
+https://stackoverflow.com/questions/23748995/pandas-dataframe-column-to-list
+https://stackoverflow.com/questions/24388297/how-to-save-list-of-objects-in-django-models
+https://www.geeksforgeeks.org/args-kwargs-python/
+https://stackoverflow.com/questions/448271/what-is-init-py-for
+https://www.geeksforgeeks.org/inheritance-in-python/
+https://stackoverflow.com/questions/11421659/passing-variables-creating-instances-self-the-mechanics-and-usage-of-classes
+https://stackoverflow.com/questions/576169/understanding-python-super-with-init-methods
+https://stackoverflow.com/questions/5615648/python-call-function-within-class
+https://stackoverflow.com/questions/805066/call-a-parent-classs-method-from-child-class
+https://stackoverflow.com/questions/34884567/python-multiple-inheritance-passing-arguments-to-constructors-using-super
+https://realpython.com/python-super/
+https://stackoverflow.com/questions/6075758/python-super-object-has-no-attribute-attribute-name

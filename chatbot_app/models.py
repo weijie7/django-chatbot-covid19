@@ -33,3 +33,6 @@ class hospitalList(models.Model):
     lat = models.FloatField()
     lng = models.FloatField()
     geocode_result = models.CharField(max_length = 5000)
+
+class diagnosisResponses(models.Model):
+    response = models.CharField(max_length=100, blank=False)

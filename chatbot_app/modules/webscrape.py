@@ -1,12 +1,3 @@
-import sys
-import django
-import os
-os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
-# setting can be found in wsgi.py folder in pycache
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
-django.setup()
-
 from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
 import pandas as pd
 from requests import get
@@ -19,13 +10,13 @@ import matplotlib.dates as mdates
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
-class statusScrapper():
+class Webscrape():
     
     def __init__(self):
         self.status_success = 0
         self.update_success = 0
 
-    def start(self):
+    def statusScrapper(self):
 
         url = 'https://www.worldometers.info/coronavirus/'
         html_soup = get(url)
@@ -91,14 +82,7 @@ class statusScrapper():
         except:
             print('Error occurred. Update globalLastUpdate unsuccessful.')
 
-###############
-
-class newsScrapper():
-
-    def __init__(self):
-        self.success = 0
-
-    def start(self):
+    def newsScrapper(self):
         url = 'https://www.moh.gov.sg/covid-19'
         response = get(url)
         print("MOH website response stataus: ",response.status_code)
@@ -120,10 +104,7 @@ class newsScrapper():
                 print(f'Title {i+1} failed to update or data already exist')
 
 
-
-
 if __name__ == "__main__":
-    ss = statusScrapper()
-    ss.start()
-    ns = newsScrapper()
-    ns.start()
+    ss = Webscrape()
+    ss.statusScrapper()
+    ss.newsScrapper()
