@@ -4,8 +4,8 @@ from datetime import datetime
 from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.models import hospitalList
 import os
-#key_ = os.environ['key_']
-#gmaps = googlemaps.Client(key = key_)
+key_ = os.environ['key_']
+gmaps = googlemaps.Client(key = key_)
 
 class Dist2Hospital(Server):
     def __init__(self, request):
