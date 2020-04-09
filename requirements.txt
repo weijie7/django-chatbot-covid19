@@ -11,3 +11,4 @@ whitenoise
 seaborn
 rq
 redis
+xlrd

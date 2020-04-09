@@ -51,12 +51,13 @@ class Feature(Server):
         if self.intent == "sync":
             try:
                 self.wbs.statusScrapper()
+                self.dgs.updateResponses()
                 self.gg.plot_it()
                 self.wbs.newsScrapper()
-                self.dgs.updateResponses()
                 self.main_text = "Sync/update completed."
             except:
                 self.main_text="Error occurred. Contact admin to debug."
+                print("There is an error!")
             finally:
                 return super().sendMsg()
 

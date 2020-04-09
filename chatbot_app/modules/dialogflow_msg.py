@@ -25,7 +25,6 @@ class Server(object):
     def sendMsg(self):
         #for single response only
         telegram = telegram_response()
-        tel_main_text = telegram.text_response([self.main_text, self.main_text, False])
 
         ff_response = fulfillment_response() #create class
         ff_text = ff_response.fulfillment_text(self.main_text) #insert ff text as first response, text only hence use fulfillment_text

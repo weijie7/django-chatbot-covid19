@@ -57,6 +57,7 @@ class gen_graph():
                 tick.set_horizontalalignment("center")
             if i == 'United Kingdom': i = 'uk'
             plt.savefig(f'static/plots/{i.lower()}.png',bbox_inches = "tight")
+            print(f'Plotted {i}')
             ax.cla()
             ax2.cla()
 
@@ -79,6 +80,7 @@ class gen_graph():
             tick.set_rotation(45)
             tick.set_horizontalalignment("center")
         plt.savefig('static/plots/usa.png',bbox_inches = "tight")
+        print('Plotted usa')
         
         self.status_success = 1
         return print('Daily Graph plots done')
