@@ -89,17 +89,18 @@ class Webscrape():
         print("MOH website response stataus: ",response.status_code)
 
         soup = BeautifulSoup(response.text, "html.parser")
-        a = soup.findAll('table')[8].findAll('tr')
+        a = soup.findAll('table')[12].findAll('tr')
 
         for i, news in enumerate(a[1:]):
-            try:
-                dict = {
-                        'news_date' : datetime.strptime(news.findAll('td')[0].getText().rstrip().replace('\xa0', ' '), fmt).date(),
-                        'news_title' : news.findAll('td')[1].getText().replace('\xa0',' '),
-                        'news_link' : news.findAll('a', href=True)[0]['href']
-                        }
-            except ValueError:
-                pass
+            for fmt in ('%d %b %Y', '%d %B %Y'):
+                try:
+                    dict = {
+                            'news_date' : datetime.strptime(news.findAll('td')[0].getText().rstrip().replace('\xa0', ' '), fmt).date(),
+                            'news_title' : news.findAll('td')[1].getText().replace('\xa0',' '),
+                            'news_link' : news.findAll('a', href=True)[0]['href']
+                            }
+                except ValueError:
+                    pass
             try:
                 MOHHeadlines.objects.create(**dict) #use ** to add dict into models
                 print(f'Title {i+1} updated successfully')
