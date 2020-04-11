@@ -11,7 +11,8 @@ class gen_graph():
     def __init__(self):
         self.status_success = 0
 
-    def plot_it(self, countries = ['China','France','Germany', 'Iran', 'Italy','Malaysia','Philippines','Singapore','Spain','United Kingdom']):
+    def plot_it(self, countries = ['China','France','Germany', 'Italy','Malaysia','Singapore','Spain']):
+        #countries = ['China','France','Germany', 'Iran', 'Italy','Malaysia','Philippines','Singapore','Spain','United Kingdom']
         #plot individual country charts
         inf_link = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
         inf_link_us = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"
@@ -55,7 +56,6 @@ class gen_graph():
             for tick in ax2.get_xticklabels():
                 tick.set_rotation(45)
                 tick.set_horizontalalignment("center")
-            if i == 'United Kingdom': i = 'uk'
             plt.savefig(f'static/plots/{i.lower()}.png',bbox_inches = "tight")
             print(f'Plotted {i}')
             ax.cla()
