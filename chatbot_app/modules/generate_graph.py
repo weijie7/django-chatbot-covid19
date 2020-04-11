@@ -11,7 +11,7 @@ class gen_graph():
     def __init__(self):
         self.status_success = 0
 
-    def plot_it(self, countries = ['China','France','Germany', 'Iran', 'Indonesia', 'Italy','Malaysia','Philippines','Singapore','Spain','United Kingdom']):
+    def plot_it(self, countries = ['China','France','Germany', 'Iran', 'Italy','Malaysia','Philippines','Singapore','Spain','United Kingdom']):
         #plot individual country charts
         inf_link = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
         inf_link_us = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"

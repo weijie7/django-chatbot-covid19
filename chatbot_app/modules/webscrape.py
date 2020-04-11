@@ -39,8 +39,9 @@ class Webscrape():
             res.append(row)
 
         col = ['country', 'diagnosed', 'new_cases', 'death',
-            'new_death', 'discharged', 'active', 'critical','nonsense1','nonsense2','nonsense3','nonsense4','nonsense5']
-        pd_table = pd.DataFrame(res, columns=col)
+            'new_death', 'discharged', 'active', 'critical']
+        pd_table = pd.DataFrame(res).iloc[8:,:8]
+        pd_table.columns = col
         global_dict = pd_table.to_dict('records')
         model_instance = [globalStatus(country=i['country'], diagnosed=i['diagnosed'], new_cases=i['new_cases'], death=i['death'], new_death=i['new_death'], discharged=i['discharged'], critical=i['critical'], active=i['active']) for i in global_dict]
 
@@ -91,11 +92,14 @@ class Webscrape():
         a = soup.findAll('table')[8].findAll('tr')
 
         for i, news in enumerate(a[1:]):
-            dict = {
-                    'news_date' : datetime.strptime(news.findAll('td')[0].getText().rstrip().replace('\xa0', ' '), '%d %b %Y').date(),
-                    'news_title' : news.findAll('td')[1].getText().replace('\xa0',' '),
-                    'news_link' : news.findAll('a', href=True)[0]['href']
-                    }
+            try:
+                dict = {
+                        'news_date' : datetime.strptime(news.findAll('td')[0].getText().rstrip().replace('\xa0', ' '), fmt).date(),
+                        'news_title' : news.findAll('td')[1].getText().replace('\xa0',' '),
+                        'news_link' : news.findAll('a', href=True)[0]['href']
+                        }
+            except ValueError:
+                pass
             try:
                 MOHHeadlines.objects.create(**dict) #use ** to add dict into models
                 print(f'Title {i+1} updated successfully')

@@ -25,7 +25,7 @@ class StatusNews(Server):
             new_death_ = pd_table[pd_table['country'] == country]['new_death'].iloc[0]
           
         except:
-            country = "Worldwide"
+            country = "worldwide"
             diagnose_ = pd_table[pd_table['country'] == 'total:']['diagnosed'].iloc[0]
             death_ = pd_table[pd_table['country'] == 'total:']['death'].iloc[0]
             discharged_ = pd_table[pd_table['country'] == 'total:']['discharged'].iloc[0]
