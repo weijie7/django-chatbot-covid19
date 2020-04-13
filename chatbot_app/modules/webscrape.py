@@ -69,12 +69,12 @@ class Webscrape():
 
         globalLastUpdate.objects.all().delete()
         globalStatus.objects.all().delete()
-        try:
-            globalStatus.objects.bulk_create(model_instance)
-            print('Update globalStatus complete!')
-            self.status_success = 1
-        except:
-            print('Update globalstatus failed. Either something went wrong or data already exist.')
+        #try:
+        globalStatus.objects.bulk_create(model_instance)
+        print('Update globalStatus complete!')
+        self.status_success = 1
+        # except:
+        #     print('Update globalstatus failed. Either something went wrong or data already exist.')
 
         try:
             globalLastUpdate.objects.create(last_update=LastUpdatetext)
