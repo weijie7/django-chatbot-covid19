@@ -1,3 +1,13 @@
+import sys
+import django
+import os
+os.environ.setdefault('DJANGO_SETTING_MODULE', 'ChatBot_Main.settings')
+# setting can be found in wsgi.py folder in pycache
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ChatBot_Main.settings'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
+django.setup()
+
+
 from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
 import pandas as pd
 from requests import get
@@ -31,7 +41,7 @@ class Webscrape():
             row = []
             for i in td:
                 val = i.text.strip().replace('+', '').replace(',', '').replace(' *','').lower() if i.text.strip() != "" else 0
-                if val == 'n/a': val = 0
+                if val == 'n/a': val = -1
                 try:
                     val = int(val)
                 except:
@@ -70,12 +80,12 @@ class Webscrape():
 
         globalLastUpdate.objects.all().delete()
         globalStatus.objects.all().delete()
-        try:
-            globalStatus.objects.bulk_create(model_instance)
-            print('Update globalStatus complete!')
-            self.status_success = 1
-        except:
-            print('Update globalstatus failed. Either something went wrong or data already exist.')
+        #try:
+        globalStatus.objects.bulk_create(model_instance)
+        print('Update globalStatus complete!')
+        self.status_success = 1
+        # except:
+        #     print('Update globalstatus failed. Either something went wrong or data already exist.')
 
         try:
             globalLastUpdate.objects.create(last_update=LastUpdatetext)
