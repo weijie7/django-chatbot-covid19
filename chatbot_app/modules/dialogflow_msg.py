@@ -32,6 +32,7 @@ class Server(object):
 
         db.connections.close_all()
         # return generated response
+        print(self.req)
         return JsonResponse(reply, safe=False)
 
     def sendMsgs(self):
@@ -47,6 +48,7 @@ class Server(object):
 
         db.connections.close_all()
         # return generated response
+        print(self.req)
         return JsonResponse(reply, safe=False)
 
     def sendMsgImg(self):
@@ -62,4 +64,5 @@ class Server(object):
 
         db.connections.close_all()
         # return generated response
+        print(self.req)
         return JsonResponse(reply, safe=False)

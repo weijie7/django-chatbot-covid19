@@ -50,7 +50,7 @@ class Webscrape():
         # Plot Charts
         pd_table['death_rate'] = pd_table['death']*100/pd_table['diagnosed']
         fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(10,6), sharex=True)
-        fig.suptitle('Infected & Death Cases Trend of Top 15 Countries as of', fontsize= 18)
+        fig.suptitle(f'Infected & Death Cases Trend of Top 15 Countries as of {LastUpdatetext}', fontsize= 18)
         ax1 = pd_table[0:16].plot.bar(x='country', y='diagnosed', ax = axs[0], fontsize=12, grid=True)
         ax2 = pd_table[0:16].plot.bar(x='country', y='death', ax = axs[1], fontsize=12, cmap = 'autumn', grid=True)
         ax3 = pd_table[0:16].plot.line(x='country', y='death_rate', ax = axs[1], fontsize=12, cmap = 'Dark2_r', grid=True, secondary_y=True, marker = 'o', linewidth=2)
