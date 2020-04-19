@@ -7,6 +7,7 @@ from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.modules.generate_graph import gen_graph
 from chatbot_app.modules.feedback import feedback
 from chatbot_app.modules.goodbye import goodbye
+from chatbot_app.models import userList
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
@@ -23,6 +24,23 @@ class Feature(Server):
         super().__init__(request)
 
         self.intent = super().rcvIntent()
+
+        # --------------------------#
+        # STORE USER INFO           #
+        # --------------------------#
+        first_name = super().rcvFirstName()
+        user_name = super().rcvUserName()
+        chat_ID = super().rcvChatID()
+        dict = {'first_name' : first_name,
+                'telegram_user' : user_name,
+                'chat_ID' : chat_ID
+                }
+        try:
+            userList.objects.create(**dict) #use ** to add dict into models
+            print('New user added.')
+        except:
+            print('User already exist. Skip')
+
 
     def main(self):
         # --------------------------#

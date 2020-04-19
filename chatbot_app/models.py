@@ -42,7 +42,12 @@ class feedbackList(models.Model):
     first_name = models.CharField(max_length=100, blank=False)
     telegram_user = models.CharField(max_length=100, blank=False)
     session_ID = models.CharField(max_length=100, blank=False)
+    chat_ID = models.CharField(max_length=100)
     rating = models.IntegerField()
     question = models.CharField(max_length=10000)
     answer = models.CharField(max_length=10000)
 
+class userList(models.Model):
+    first_name = models.CharField(max_length=100, blank=False)
+    telegram_user = models.CharField(max_length=100, blank=False)
+    chat_ID = models.CharField(max_length=100,unique=True, blank=False)

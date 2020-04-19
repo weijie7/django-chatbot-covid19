@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+    </head>
+    <body>
+        <div class='container'>
+            
+            {% if table %}
+
+            <table class='table'>
+                <thead>
+                    <th>First Name</th>
+                    <th>Chat ID</th>
+                </thead>
+                {% for i in table %}
+                <tr>
+                    <td>{{i.first_name}}</td>
+                    <td>{{i.chat_ID}}</td>
+                </tr>
+                {%endfor%}
+            </table>
+            {% else %}
+            <br>
+            <p>No record found!</p>
+            {%endif%}
+            <br>
+
+
+        </div>
+        <script src="" async defer></script>
+    </body>
+</html>

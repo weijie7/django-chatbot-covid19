@@ -39,6 +39,13 @@ class Server(object):
             un = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('username')
         return un
 
+    def rcvChatID(self):
+        try:
+            id_ = self.req.get   ('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('id')
+        except:
+            id_ = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('id')
+        return str(id_).split('.')[0]
+
     def sendMsg(self):
         #for single response only
         ff_response = fulfillment_response() #create class

@@ -20,5 +20,7 @@ from chatbot_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('webhook/', views.webhook, name='webhook'),
+    path('user_list/', views.user_list, name='user_list'),
+    path('feedback_page/', views.feedback_page, name='feedback_page_list'),
     path('',views.index, name='index')
 ]
