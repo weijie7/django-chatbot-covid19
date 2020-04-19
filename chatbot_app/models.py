@@ -36,3 +36,13 @@ class hospitalList(models.Model):
 
 class diagnosisResponses(models.Model):
     response = models.CharField(max_length=100, blank=False)
+
+class feedbackList(models.Model):
+    intent = models.CharField(max_length=100, blank=False)
+    first_name = models.CharField(max_length=100, blank=False)
+    telegram_user = models.CharField(max_length=100, blank=False)
+    session_ID = models.CharField(max_length=100, blank=False)
+    rating = models.IntegerField()
+    question = models.CharField(max_length=10000)
+    answer = models.CharField(max_length=10000)
+

@@ -361,14 +361,17 @@ class telegram_response():
             }
 
     def card_response(self, title, buttons):
-        buttons_json = []
-        for button in buttons:
-            buttons_json.append(
-                {
-                    "text": str(button[0]),
-                    "postback": str(button[1])
-                }
-            )
+        if buttons == None:
+            buttons_json = None
+        else:
+            buttons_json = []
+            for button in buttons:
+                buttons_json.append(
+                    {
+                        "text": str(button[0]),
+                        "postback": str(button[1])
+                    }
+                )
 
         return {
             "card": {

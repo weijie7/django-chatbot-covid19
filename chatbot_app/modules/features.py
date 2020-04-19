@@ -5,6 +5,8 @@ from chatbot_app.modules.diagnosis import Diagnosis
 from chatbot_app.modules.webscrape import Webscrape
 from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.modules.generate_graph import gen_graph
+from chatbot_app.modules.feedback import feedback
+from chatbot_app.modules.goodbye import goodbye
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
@@ -14,6 +16,8 @@ class Feature(Server):
         self.sn = StatusNews(request)
         self.d2h = Dist2Hospital(request)
         self.dgs = Diagnosis(request)
+        self.fb = feedback(request)
+        self.gb = goodbye(request)
         self.wbs = Webscrape()
         self.gg = gen_graph()
         super().__init__(request)
@@ -61,5 +65,15 @@ class Feature(Server):
             finally:
                 return super().sendMsg()
 
-      
+        # --------------------------#
+        # FEEDBACK GATHER           #
+        # --------------------------#
+        if self.intent == "feedback-bad" or self.intent == "feedback-good":
+            return self.fb.store_fb()
+        
+        # --------------------------#
+        # GOODBYE                   #
+        # --------------------------#
+        if self.intent == "goodbye":
+            return self.gb.bye()
         

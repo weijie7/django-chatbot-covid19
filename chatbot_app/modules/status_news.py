@@ -39,7 +39,7 @@ class StatusNews(Server):
         
         vkey = random.randrange(1,99999999,1)
         self.img_url = f"https://covid-chatbot.herokuapp.com/static/plots/{country}.png?v={vkey}"
-        
+        self.get_input = 1
         return super().sendMsgImg()
 
     def headlineNews(self):
