@@ -31,7 +31,7 @@ class Server(object):
 
         #feedback
         if self.get_input == 1:
-            event = ff_response.followup_event_input('get_input')
+            event = ff_response.followup_event_input(name='get_input', parameters =None)
         else:
             event = None
         reply = ff_response.main_response(ff_text, followup_event_input = event)
