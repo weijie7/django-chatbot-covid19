@@ -52,5 +52,6 @@ class StatusNews(Server):
             metatext = metatext + f"{date_} \n{title_} \n{link_}\n\n"
         
         self.main_text = metatext + "For more info: https://www.moh.gov.sg/covid-19"
+        self.get_input = 1
         return super().sendMsg()
 

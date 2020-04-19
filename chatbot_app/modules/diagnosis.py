@@ -57,6 +57,7 @@ class Diagnosis(Server):
         except "Invalid parameter value":
             self.main_text = "Parameter does not store either yes or no. Please check the entity naming in Dialogflow."
         finally:
+            self.get_input = 1
             return super().sendMsg()
 
 

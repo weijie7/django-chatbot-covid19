@@ -15,6 +15,7 @@ class Server(object):
         self.main_text = None
         self.sub_text = None
         self.img_url = None
+        self.get_input = None
 
     def rcvIntent(self):
         return self.req.get('queryResult').get('intent').get('displayName')
@@ -24,11 +25,16 @@ class Server(object):
 
     def sendMsg(self):
         #for single response only
-        telegram = telegram_response()
 
         ff_response = fulfillment_response() #create class
         ff_text = ff_response.fulfillment_text(self.main_text) #insert ff text as first response, text only hence use fulfillment_text
-        reply = ff_response.main_response(ff_text)
+
+        #feedback
+        if self.get_input == 1:
+            event = ff_response.followup_event_input('get_input')
+        else:
+            event = None
+        reply = ff_response.main_response(ff_text, followup_event_input = event)
 
         db.connections.close_all()
         # return generated response
