@@ -8,8 +8,8 @@ import os
 class Dist2Hospital(Server):
     def __init__(self, request):
         super().__init__(request)
-        #self.__key = key_ = os.environ['key_']
-        #self.gmaps = googlemaps.Client(key = key_)
+        self.__key = key_ = os.environ['key_']
+        self.gmaps = googlemaps.Client(key = key_)
 
     def dist2hospital(self):
         address_ = super().rcvParam('address')
