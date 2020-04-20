@@ -42,8 +42,8 @@ class diagnosisResponses(models.Model):
 
 class feedbackList(models.Model):
     intent = models.CharField(max_length=100, blank=False)
-    first_name = models.CharField(max_length=100, blank=False)
-    telegram_user = models.CharField(max_length=100, blank=False)
+    first_name = models.CharField(max_length=100, blank=True)
+    telegram_user = models.CharField(max_length=100, blank=True)
     session_ID = models.CharField(max_length=100, blank=False)
     chat_ID = models.CharField(max_length=100)
     rating = models.IntegerField()
@@ -52,8 +52,8 @@ class feedbackList(models.Model):
     datetime = models.DateTimeField(auto_now = True)
 
 class userList(models.Model):
-    first_name = models.CharField(max_length=100, blank=False)
-    telegram_user = models.CharField(max_length=100, blank=False)
+    first_name = models.CharField(max_length=100, blank=True)
+    telegram_user = models.CharField(max_length=100, blank=True)
     chat_ID = models.CharField(max_length=100,unique=True, blank=False)
     
 class graphPlot(models.Model):
@@ -61,3 +61,10 @@ class graphPlot(models.Model):
     plot = models.ImageField(upload_to ='plots/', storage=OverwriteStorage())
     datetime = models.DateTimeField(auto_now = True)
 
+class userDiagnosis(models.Model):
+    first_name = models.CharField(max_length=100, blank=True)
+    chat_ID = models.CharField(max_length=100,unique=True, blank=False)
+    diagnosis_result = models.CharField(max_length=100, blank=False)
+    datetime = models.DateTimeField(auto_now = True)
+    check_in = models.BooleanField()
+    

@@ -29,10 +29,8 @@ class Feature(Server):
         # STORE USER INFO           #
         # --------------------------#
         first_name = super().rcvFirstName()
-        user_name = super().rcvUserName()
         chat_ID = super().rcvChatID()
         dict = {'first_name' : first_name,
-                'telegram_user' : user_name,
                 'chat_ID' : chat_ID
                 }
         try:

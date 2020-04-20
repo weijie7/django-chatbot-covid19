@@ -9,7 +9,6 @@ class feedback(Server):
     def store_fb(self):
         intent = super().rcvIntent()
         first_name = super().rcvFirstName()
-        user_name = super().rcvUserName()
         session = self.req.get('session').split('/')[-1]
         chat_ID = super().rcvChatID()
         rating = super().rcvParam('Rating')
@@ -25,16 +24,16 @@ class feedback(Server):
         else:
             self.main_text = "I don't understand. Please select thumbs up/down from the button! 😁"
             rating = -1
-        
-        dict = {'intent' : intent,
-                'first_name' : first_name,
-                'telegram_user' : user_name,
-                'session_ID' : session,
-                'chat_ID' : chat_ID,
-                'rating' : rating,
-                'question' : question,
-                'answer' : answer,
-                }
-        feedbackList.objects.create(**dict) #use ** to add dict into models
+       
+        if self.req.get('originalDetectIntentRequest').get('source') == "telegram":
+            dict = {'intent' : intent,
+                    'first_name' : first_name,
+                    'session_ID' : session,
+                    'chat_ID' : chat_ID,
+                    'rating' : rating,
+                    'question' : question,
+                    'answer' : answer,
+                    }
+            feedbackList.objects.create(**dict) #use ** to add dict into models
 
         return super().feedbackMsg()

@@ -16,9 +16,8 @@ class Server(object):
         self.sub_text = None
         self.img_url = None
         self.get_input = None
-        self.user_name = None
         self.first_name = None
-        
+
     def rcvIntent(self):
         return self.req.get('queryResult').get('intent').get('displayName')
 
@@ -26,25 +25,24 @@ class Server(object):
         return self.req.get('queryResult').get('parameters').get(value)
 
     def rcvFirstName(self):
-        try:
-            fn = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('first_name')
-        except:
-            fn = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('first_name')
-        return fn
-
-    def rcvUserName(self):
-        try:
-            un = self.req.get   ('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('username')
-        except:
-            un = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('username')
-        return un
+        if self.req.get('originalDetectIntentRequest').get('source') == "telegram":
+            try:
+                fn = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('first_name')
+            except:
+                fn = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('first_name')
+            return fn
+        else:
+            return None
 
     def rcvChatID(self):
-        try:
-            id_ = self.req.get   ('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('id')
-        except:
-            id_ = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('id')
-        return str(id_).split('.')[0]
+        if self.req.get('originalDetectIntentRequest').get('source') == "telegram":
+            try:
+                id_ = self.req.get   ('originalDetectIntentRequest').get('payload').get('data').get('callback_query').get('from').get('id')
+            except:
+                id_ = self.req.get('originalDetectIntentRequest').get('payload').get('data').get('from').get('id')
+            return str(id_).split('.')[0]
+        else:
+            return None
 
     def sendMsg(self):
         #for single response only
