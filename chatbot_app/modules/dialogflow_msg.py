@@ -18,8 +18,7 @@ class Server(object):
         self.get_input = None
         self.user_name = None
         self.first_name = None
-        print(request)
-
+        
     def rcvIntent(self):
         return self.req.get('queryResult').get('intent').get('displayName')
 
