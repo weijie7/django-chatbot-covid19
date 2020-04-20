@@ -73,7 +73,7 @@ class gen_graph():
         df.index = pd.to_datetime(df.index)
         df2 = dead_us_grp['US']
         df2.index = pd.to_datetime(df.index)
-        fig.suptitle(f'Total Confirmed Cases in {i} for Past 30 Days', fontsize= 18)
+        fig.suptitle(f'Total Confirmed Cases in USA for Past 30 Days', fontsize= 18)
         ax = sns.lineplot(data=df, palette="tab10", linewidth=2.5, marker='o', color="coral", ax = axs[0], legend='full')
         ax2 = sns.lineplot(data=df2, palette="tab10", linewidth=2.5, marker='o', color="red", ax = axs[1], legend='full')
         ax.set_ylabel('Total Diagnosed')
@@ -86,9 +86,9 @@ class gen_graph():
         for tick in ax2.get_xticklabels():
             tick.set_rotation(45)
             tick.set_horizontalalignment("center")
-        figure1 = io.BytesIO()
-        plt.savefig(figure1, format = 'png',bbox_inches = "tight")
-        image = ImageFile(figure1)
+        figure = io.BytesIO()
+        plt.savefig(figure, format = 'png',bbox_inches = "tight")
+        image = ImageFile(figure)
         plot_instance = graphPlot(name = 'usa.png')
         plot_instance.plot.save('usa.png', image)
         print('Plotted usa')
