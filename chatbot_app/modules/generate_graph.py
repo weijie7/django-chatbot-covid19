@@ -86,11 +86,10 @@ class gen_graph():
         for tick in ax2.get_xticklabels():
             tick.set_rotation(45)
             tick.set_horizontalalignment("center")
-
-        figure = io.BytesIO()
-        plt.savefig(figure, format = 'png',bbox_inches = "tight")
-        image = ImageFile(figure)
-        plot_instance = graphPlot(name = f'usa.png')
+        figure1 = io.BytesIO()
+        plt.savefig(figure1, format = 'png',bbox_inches = "tight")
+        image = ImageFile(figure1)
+        plot_instance = graphPlot(name = 'usa.png')
         plot_instance.plot.save('usa.png', image)
         print('Plotted usa')
         
