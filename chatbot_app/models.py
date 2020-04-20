@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -46,6 +47,8 @@ class feedbackList(models.Model):
     rating = models.IntegerField()
     question = models.CharField(max_length=10000)
     answer = models.CharField(max_length=10000)
+    datetime = models.DateTimeField(default = datetime.now())
+    
 
 class userList(models.Model):
     first_name = models.CharField(max_length=100, blank=False)

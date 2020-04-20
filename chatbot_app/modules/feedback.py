@@ -1,5 +1,6 @@
 from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.models import feedbackList
+from datetime import datetime
 
 class feedback(Server):
     def __init__(self, request):
@@ -14,6 +15,7 @@ class feedback(Server):
         rating = super().rcvParam('Rating')
         question = super().rcvParam('question')
         answer = super().rcvParam('answer')
+        datetime = datetime.now()
 
         if rating == "👍":
             self.main_text = "Thank you for your input! ❤️"
@@ -32,7 +34,8 @@ class feedback(Server):
                 'chat_ID' : chat_ID,
                 'rating' : rating,
                 'question' : question,
-                'answer' : answer
+                'answer' : answer,
+                'datetime' : datetime
                 }
         feedbackList.objects.create(**dict) #use ** to add dict into models
 
