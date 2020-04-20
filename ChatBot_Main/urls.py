@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from chatbot_app import views
+from django.conf.urls.static import static
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('webhook/', views.webhook, name='webhook'),
     path('user_list/', views.user_list, name='user_list'),
     path('feedback_page/', views.feedback_page, name='feedback_page_list'),
-    path('',views.index, name='index')
-]
+    path('',views.index, name='index') 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

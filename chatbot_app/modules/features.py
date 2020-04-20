@@ -71,17 +71,17 @@ class Feature(Server):
         # SYNC  INTENT              #
         # --------------------------#
         if self.intent == "sync":
-            try:
-                self.wbs.statusScrapper()
-                self.wbs.newsScrapper()
-                self.dgs.updateResponses()
-                self.gg.plot_it()
-                self.main_text = "Sync/update completed."
-            except:
-                self.main_text="Error occurred. Contact admin to debug."
-                print("There is an error!")
-            finally:
-                return super().sendMsg()
+            # try:
+            self.wbs.statusScrapper()
+            self.wbs.newsScrapper()
+            self.dgs.updateResponses()
+            self.gg.plot_it()
+            self.main_text = "Sync/update completed."
+            # except:
+            #     self.main_text="Error occurred. Contact admin to debug."
+            #     print("There is an error!")
+            # finally:
+            return super().sendMsg()
 
         # --------------------------#
         # FEEDBACK GATHER           #

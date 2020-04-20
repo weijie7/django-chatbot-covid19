@@ -38,7 +38,7 @@ class StatusNews(Server):
         self.main_text = f'Currently, {country.capitalize()} has a total of {diagnose_:.0f} confirmed cases, + {new_case_:.0f} new case(s) from yesterday. There is total of {death_:.0f} death case(s), + {new_death_:.0f} new death case(s) from yesterday. \n\n{discharged_:.0f} people recovered from it, and {critical_:.0f} people still in critical condition. \n\n{LastUpdate}.'
         
         vkey = random.randrange(1,99999999,1)
-        self.img_url = f"https://covid-chatbot.herokuapp.com/static/plots/{country}.png?v={vkey}"
+        self.img_url = f"https://covid-chatbot.herokuapp.com/media/plots/{country}.png?v={vkey}"
         self.get_input = 1
         return super().sendMsgImg()
 

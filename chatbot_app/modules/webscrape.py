@@ -1,4 +1,4 @@
-from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList
+from chatbot_app.models import globalStatus, globalLastUpdate, MOHHeadlines, hospitalList, graphPlot
 import pandas as pd
 from requests import get
 from bs4 import BeautifulSoup
@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.dates as mdates
+from django.core.files.images import ImageFile
+import io
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
 
@@ -64,12 +66,18 @@ class Webscrape():
         ax3.set_xlim(-0.5,14.5)
         ax3.set_yticks(np.linspace(ax3.get_yticks()[0], round(ax3.get_yticks()[-1]), 6))
         ax2.set_yticks(np.linspace(ax2.get_yticks()[0], round(ax2.get_yticks()[-1],-3), 6))
-        plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+        #plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+        figure = io.BytesIO()
+        plt.savefig(figure, format = 'png',bbox_inches = "tight")
+        image = ImageFile(figure)
+        plot_instance = graphPlot(name = 'worldwide.png')
+        plot_instance.plot.save('worldwide.png', image)
 
         print('Graphs Job Completed')
 
         globalLastUpdate.objects.all().delete()
         globalStatus.objects.all().delete()
+        graphPlot.objects.all().delete()
         try:
             globalStatus.objects.bulk_create(model_instance)
             print('Update globalStatus complete!')

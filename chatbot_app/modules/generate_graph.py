@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
 import seaborn as sns
+from chatbot_app.models import graphPlot
+from django.core.files.images import ImageFile
+import io
 
 class gen_graph():
     
@@ -56,7 +59,11 @@ class gen_graph():
             for tick in ax2.get_xticklabels():
                 tick.set_rotation(45)
                 tick.set_horizontalalignment("center")
-            plt.savefig(f'static/plots/{i.lower()}.png',bbox_inches = "tight")
+            figure = io.BytesIO()
+            plt.savefig(figure, format = 'png',bbox_inches = "tight")
+            image = ImageFile(figure)
+            plot_instance = graphPlot(name = f'{i.lower()}.png')
+            plot_instance.plot.save(f'{i.lower()}.png', image)
             print(f'Plotted {i}')
             ax.cla()
             ax2.cla()
@@ -79,7 +86,12 @@ class gen_graph():
         for tick in ax2.get_xticklabels():
             tick.set_rotation(45)
             tick.set_horizontalalignment("center")
-        plt.savefig('static/plots/usa.png',bbox_inches = "tight")
+
+        figure = io.BytesIO()
+        plt.savefig(figure, format = 'png',bbox_inches = "tight")
+        image = ImageFile(figure)
+        plot_instance = graphPlot(name = f'usa.png')
+        plot_instance.plot.save('usa.png', image)
         print('Plotted usa')
         
         self.status_success = 1

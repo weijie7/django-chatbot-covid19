@@ -12,3 +12,4 @@ seaborn
 rq
 redis
 xlrd
+Pillow

@@ -11,12 +11,22 @@
     </head>
     <body>
         
-        <h1>For uploading graphs:</h1>
+        <!-- <h1>For uploading graphs:</h1>
         <br>
         {% for i in imgs %}
         <p>{{i}}</p>
           <img src="{% static 'plots/'%}{{i}}" alt="Picture not found">
-        {% endfor %}
-        
+        {% endfor %} -->
+
+        {% for i in image_list %}
+
+            <p>{{i.name}}</p>
+            <img src="{{i.plot.url}}" alt="{{i.name}} not found" />
+
+        {%endfor%}
+
+
+
+
     </body>
 </html>

@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from chatbot_app.modules.storage import OverwriteStorage
+import os
 
 # Create your models here.
 
@@ -47,10 +49,15 @@ class feedbackList(models.Model):
     rating = models.IntegerField()
     question = models.CharField(max_length=10000)
     answer = models.CharField(max_length=10000)
-    datetime = models.DateTimeField(default = datetime.now())
-    
+    datetime = models.DateTimeField(auto_now = True)
 
 class userList(models.Model):
     first_name = models.CharField(max_length=100, blank=False)
     telegram_user = models.CharField(max_length=100, blank=False)
     chat_ID = models.CharField(max_length=100,unique=True, blank=False)
+    
+class graphPlot(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    plot = models.ImageField(upload_to ='plots/', storage=OverwriteStorage())
+    datetime = models.DateTimeField(auto_now = True)
+

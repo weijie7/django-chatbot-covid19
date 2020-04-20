@@ -5,17 +5,21 @@ from django.conf import settings
 import os
 
 from chatbot_app.modules.features import Feature
-from chatbot_app.models import feedbackList, userList
+from chatbot_app.models import feedbackList, userList, graphPlot
 
 # Create your views here.
 
 def index(request):
-    image_list=[]
-    for root, dirs, files in os.walk(settings.STATIC_ROOT):
-        for file in files:
-            if file.endswith(".png"):
-                image_list.append(file)
-    return render(request, r'chat_bot_template/index.html', context= {'imgs' : image_list})
+    image_obj = graphPlot.objects.order_by('name')
+    image_dict = {'image_list' : image_obj}
+    return render(request, r'chat_bot_template/index.html', image_dict)
+    
+    # image_list=[]
+    # for root, dirs, files in os.walk(settings.STATIC_ROOT):
+    #     for file in files:
+    #         if file.endswith(".png"):
+    #             image_list.append(file)
+    # return render(request, r'chat_bot_template/index.html', context= {'imgs' : image_list})
 
 @csrf_exempt
 def webhook(request):
