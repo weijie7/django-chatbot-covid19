@@ -65,7 +65,12 @@ class Server(object):
             #create context
             session = self.req.get('session')
             session_context = [
-                                    ['feedback-followup', 1, {'question': self.req.get('queryResult').get('queryText') , 'answer': [self.main_text]}]
+                                    ['feedback-followup', 1, 
+                                    {
+                                    'triggered_intent': self.req.get('queryResult').get('intent').get('displayName'), 
+                                    'question': self.req.get('queryResult').get('queryText') , 
+                                    'answer': [self.main_text]
+                                    }]
                                 ]
             #feedback-followup is input context for feedback. None for parameter
             output = ff_response.output_contexts(session, session_context)
@@ -102,7 +107,12 @@ class Server(object):
             #create context
             session = self.req.get('session')
             session_context = [
-                                    ['feedback-followup', 1, {'question': self.req.get('queryResult').get('queryText') , 'answer': [self.main_text, self.sub_text]}]
+                                    ['feedback-followup', 1, 
+                                    {
+                                    'triggered_intent': self.req.get('queryResult').get('intent').get('displayName'), 
+                                    'question': self.req.get('queryResult').get('queryText') , 
+                                    'answer': [self.main_text, self.sub_text]
+                                    }]
                                 ]
             #feedback-followup is input context for feedback. None for parameter
             output = ff_response.output_contexts(session, session_context)
@@ -139,7 +149,12 @@ class Server(object):
             #create context
             session = self.req.get('session')
             session_context = [
-                                    ['feedback-followup', 1, {'question': self.req.get('queryResult').get('queryText') , 'answer': [self.main_text, self.img_url]}]
+                                    ['feedback-followup', 1, 
+                                    {
+                                        'triggered_intent': self.req.get('queryResult').get('intent').get('displayName'), 
+                                        'question': self.req.get('queryResult').get('queryText') , 
+                                        'answer': [self.main_text, self.img_url]
+                                    }]
                                 ]
             #feedback-followup is input context for feedback. None for parameter
             output = ff_response.output_contexts(session, session_context)

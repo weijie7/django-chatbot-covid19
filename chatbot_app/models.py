@@ -46,6 +46,7 @@ class feedbackList(models.Model):
     telegram_user = models.CharField(max_length=100, blank=True)
     session_ID = models.CharField(max_length=100, blank=False)
     chat_ID = models.CharField(max_length=100)
+    triggered_intent = models.CharField(max_length=100, blank=True)
     rating = models.IntegerField()
     question = models.CharField(max_length=10000)
     answer = models.CharField(max_length=10000)
@@ -55,6 +56,7 @@ class userList(models.Model):
     first_name = models.CharField(max_length=100, blank=True)
     telegram_user = models.CharField(max_length=100, blank=True)
     chat_ID = models.CharField(max_length=100,unique=True, blank=False)
+    subscribe = models.BooleanField(default = True)
     
 class graphPlot(models.Model):
     name = models.CharField(max_length=100, blank=False)
@@ -67,4 +69,3 @@ class userDiagnosis(models.Model):
     diagnosis_result = models.CharField(max_length=100, blank=False)
     datetime = models.DateTimeField(auto_now = True)
     check_in = models.BooleanField()
-    

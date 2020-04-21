@@ -7,6 +7,7 @@ from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.modules.generate_graph import gen_graph
 from chatbot_app.modules.feedback import feedback
 from chatbot_app.modules.goodbye import goodbye
+from chatbot_app.modules.subscription import subscribe
 from chatbot_app.models import userList
 
 #### FOR GLOBAL STATUS - FOR INFECTION STATUS INTENT ####
@@ -19,6 +20,7 @@ class Feature(Server):
         self.dgs = Diagnosis(request)
         self.fb = feedback(request)
         self.gb = goodbye(request)
+        self.sub = subscribe(request)
         self.wbs = Webscrape()
         self.gg = gen_graph()
         super().__init__(request)
@@ -93,3 +95,10 @@ class Feature(Server):
         if self.intent == "goodbye":
             return self.gb.bye()
         
+        # --------------------------#
+        # SUBSCRIPTION              #
+        # --------------------------#
+        if self.intent == "subscribe":
+            return self.sub.sub()
+        if self.intent == "unsubscribe":
+            return self.sub.unsub()

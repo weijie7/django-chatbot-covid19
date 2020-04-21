@@ -12,6 +12,7 @@ class feedback(Server):
         session = self.req.get('session').split('/')[-1]
         chat_ID = super().rcvChatID()
         rating = super().rcvParam('Rating')
+        triggered_intent = super().rcvParam('triggered_intent')
         question = super().rcvParam('question')
         answer = super().rcvParam('answer')
 
@@ -31,6 +32,7 @@ class feedback(Server):
                     'session_ID' : session,
                     'chat_ID' : chat_ID,
                     'rating' : rating,
+                    'triggered_intent' : triggered_intent,
                     'question' : question,
                     'answer' : answer,
                     }

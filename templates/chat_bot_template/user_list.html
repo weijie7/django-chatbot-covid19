@@ -17,11 +17,13 @@
                 <thead>
                     <th>First Name</th>
                     <th>Chat ID</th>
+                    <th>Subscription</th>
                 </thead>
                 {% for i in table %}
                 <tr>
                     <td>{{i.first_name}}</td>
                     <td>{{i.chat_ID}}</td>
+                    <td>{{i.subscribe}}</td>
                 </tr>
                 {%endfor%}
             </table>
