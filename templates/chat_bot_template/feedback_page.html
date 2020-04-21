@@ -21,6 +21,7 @@
                     <th>Rating</th>
                     <th>Question</th>
                     <th>Answer</th>
+                    <th>Date Time</th>
                 </thead>
                 {% for i in fb_table %}
                 <tr>
@@ -30,6 +31,7 @@
                     <td>{{i.rating}}</td>
                     <td>{{i.question}}</td>
                     <td>{{i.answer}}</td>
+                    <td>{{i.datetime}}</td>
                 </tr>
                 {%endfor%}
             </table>
