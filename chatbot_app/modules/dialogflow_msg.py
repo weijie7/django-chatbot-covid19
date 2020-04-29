@@ -94,9 +94,9 @@ class Server(object):
         if check_in == True:
             #create diagnosis card response
             if self.result == 1:
-                title = "Would you like to assess yourself again after 2 days?"
+                title = "Seems like I can't be of certain that your symptoms is due to COVID-19. Would you want me to check in with you again after 2-3 days?"
             elif self.result == 2:
-                title = "Do you want me to assess you again after 2 weeks?"
+                title = "I can help to monitor your symptoms during your isolation period. Would you want me to check in with you after your isolation period?"
             else:
                 sys.exit("queryID is not 0, 1, or 2, Check excel file database.")
             buttons = [

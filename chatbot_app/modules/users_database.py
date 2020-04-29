@@ -44,11 +44,11 @@ class UserDB(Server):
         if checkin == "👍":
             #print("chatID: " + str(self.chat_ID))
             userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=True, datetime=timezone.now())
-            self.main_text = "Ok! I will remind you again, so please check for notification after 2 "+ str(period) + " :D"
+            self.main_text = f"Ok, {self.first_name}! I will remind you again, so please check for notification after 2 "+ str(period) + " 😁"
             
         elif checkin == "👎":
             userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(check_in=False)
-            self.main_text = "Understood. Do ask me again for self assessment anytime :)"
+            self.main_text = f"No problem, {self.first_name}. Do ask me again for self assessment anytime 😁"
 
         else:
             self.main_text = "I don't understand. Please select either yes button or no button! 😁"
