@@ -9,7 +9,7 @@ from chatbot_app.models import graphPlot
 from django.core.files.images import ImageFile
 import io
 
-class gen_graph():
+class Gen_graph():
     
     def __init__(self):
         self.status_success = 0

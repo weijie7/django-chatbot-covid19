@@ -39,6 +39,7 @@ class hospitalList(models.Model):
 
 class diagnosisResponses(models.Model):
     response = models.CharField(max_length=100, blank=False)
+    query_ID = models.IntegerField()
 
 class feedbackList(models.Model):
     intent = models.CharField(max_length=100, blank=False)
@@ -66,6 +67,6 @@ class graphPlot(models.Model):
 class userDiagnosis(models.Model):
     first_name = models.CharField(max_length=100, blank=True)
     chat_ID = models.CharField(max_length=100,unique=True, blank=False)
-    diagnosis_result = models.CharField(max_length=100, blank=False)
     datetime = models.DateTimeField(auto_now = True)
-    check_in = models.BooleanField()
+    diagnosis_result = models.CharField(max_length=1, blank=False)
+    check_in = models.BooleanField(default = False)

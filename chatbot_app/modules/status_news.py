@@ -39,8 +39,7 @@ class StatusNews(Server):
         
         vkey = random.randrange(1,99999999,1)
         self.img_url = f"https://covid-chatbot.herokuapp.com/media/plots/{country}.png?v={vkey}"
-        self.get_input = 1
-        return super().sendMsgImg()
+        return super().sendMsg(get_fb=True, image=True)
 
     def headlineNews(self):
         news_list = list(MOHHeadlines.objects.order_by('-news_date').values())
@@ -52,6 +51,5 @@ class StatusNews(Server):
             metatext = metatext + f"{date_} \n{title_} \n{link_}\n\n"
         
         self.main_text = metatext + "For more info: https://www.moh.gov.sg/covid-19"
-        self.get_input = 1
-        return super().sendMsg()
+        return super().sendMsg(get_fb=True, single=True)
 

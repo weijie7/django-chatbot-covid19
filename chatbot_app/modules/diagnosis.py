@@ -1,10 +1,14 @@
+import sys
 import pandas as pd
 from chatbot_app.modules.dialogflow_msg import Server
 from chatbot_app.models import diagnosisResponses
+from chatbot_app.models import userDiagnosis
 
 class Diagnosis(Server):
     def __init__(self, request):
         super().__init__(request)
+        self.first_name = super().rcvUserData('first_name')
+        self.chat_ID = super().rcvUserData('id')
 
     def diagnosis(self):
         try:
@@ -36,38 +40,58 @@ class Diagnosis(Server):
 
             # High Risk 1
             if ((Q > 0) and (S > 0)) or ((Q==0) and (S==3)):
+                self.result = res_list[0]['query_ID']
                 self.main_text = res_list[0]['response'] 
             # High Risk 2
             elif q1 and (S==0):
+                self.result = res_list[1]['query_ID']
                 self.main_text = res_list[1]['response'] 
             # High Risk 3
             elif (not q1 and q2) and (S==0):
+                self.result = res_list[2]['query_ID']
                 self.main_text = res_list[2]['response'] 
             # Medium Risk 
             elif (Q==0) and (S==2):
+                self.result = res_list[3]['query_ID']
                 self.main_text = res_list[3]['response'] 
             # Low Risk 
             elif (Q==0) and (S==1):
+                self.result = res_list[4]['query_ID']
                 self.main_text = res_list[4]['response'] 
             # No Risk 
             elif (Q==0) and (S==0):
+                self.result = res_list[5]['query_ID']
                 self.main_text = res_list[5]['response'] 
             else:
                 self.main_text = "Unknown response! Check for logics in Rule Base System."
         except "Invalid parameter value":
             self.main_text = "Parameter does not store either yes or no. Please check the entity naming in Dialogflow."
         finally:
-            self.get_input = 1
-            return super().sendMsg()
+            # save diagnosis user data
+            user_instant = userDiagnosis(first_name= self.first_name, chat_ID= self.chat_ID, diagnosis_result= self.result)
+            try:
+                user_instant.save()
+                print('New user added for Diagnosis.')
+            except Exception as e: 
+                print('Error: '+str(e))
+                userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(diagnosis_result= self.result)
+                print('User already exists in Diagnosis. Overwrite diagnosis_result.')
 
+            if self.result == 0:
+                return super().sendMsg(get_fb=True, single=True)
+            elif self.result == 1 or self.result == 2:
+                return super().sendMsg(check_in=True, single=True)
+            else:
+                sys.exit("queryID is not 0, 1, or 2, Check excel file database.")
 
     def updateResponses(self):
         diagnosisResponses.objects.all().delete()
 
         #get data from excel file
         data = pd.read_excel('chatbot_app/components/database.xlsx', 'Sheet1', index_col=None, na_values=['NA'])
-        dlist = data["Responses"].tolist()
-        res_list = [d.replace('\xa0',' ') for d in dlist]
+        res_dict = data.to_dict('records')
+        dgs_instance = [diagnosisResponses(response=d['Responses'].replace('\xa0',' '), query_ID=d['QueryID']) for d in res_dict]
+        diagnosisResponses.objects.bulk_create(dgs_instance)
 
         try:
             obj_list = [diagnosisResponses(response=text) for text in res_list]
