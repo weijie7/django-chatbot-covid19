@@ -16,8 +16,7 @@ class UserDB(Server):
             userList.objects.create(**dict) #use ** to add dict into models
             print('New user added.')
         except Exception as e: 
-            print('Error: '+str(e))
-            print('User already exist. Skip')
+            print('Error: '+str(e) + '. User already exist. Skip')
     
     def subscribe(self):
         userList.objects.filter(chat_ID=self.chat_ID).update(subscribe=True)

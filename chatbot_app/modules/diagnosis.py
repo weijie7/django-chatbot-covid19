@@ -73,9 +73,8 @@ class Diagnosis(Server):
                 user_instant.save()
                 print('New user added for Diagnosis.')
             except Exception as e: 
-                print('Error: '+str(e))
+                print('Error: '+str(e) + '. User already exists in Diagnosis. Overwrite diagnosis_result.')
                 userDiagnosis.objects.filter(chat_ID=self.chat_ID).update(diagnosis_result= self.result)
-                print('User already exists in Diagnosis. Overwrite diagnosis_result.')
 
             if self.result == 0:
                 return super().sendMsg(get_fb=True, single=True)
