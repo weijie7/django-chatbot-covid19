@@ -9,4 +9,11 @@ def start_ps(period = 5):
     print("Parent Process PID: " + str(os.getpid()))
     print('Start Multiprocess Process')
 
-start_ps()
+#start_ps()
+
+
+from rq import Queue
+from worker import conn
+ntf = Notification()
+q = Queue(connection = conn, default_timeout=5000)
+comment = q.enqueue(ntf.checkin_date)

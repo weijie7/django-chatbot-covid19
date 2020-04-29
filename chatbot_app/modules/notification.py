@@ -37,26 +37,12 @@ class Notification():
                 print("current: " + str(current_dt))
                 print("time to send?", notify_dt < current_dt)
                 print("checkin: " + str(checkin))
-                count = 0
 
                 if notify_dt < current_dt and checkin == True:
-                    count+=1
-                    print(count)
-                    print("time to send?", notify_dt < current_dt)
-                    print("checkin: " + str(checkin))
-                    print("PID: " + str(os.getpid()))
                     self.send_checkin(chat_id)
-                    count+=1
-                    print(count)
-                    print('after send here')
                     #reset checkin to avoid resending
-                    print('before update here')
                     userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
                     print("Sent Notification for checkin user!!")
-                    print("time to send?", notify_dt < current_dt)
-                    print("checkin: " + str(checkin))
-                    count+=1
-                    print(count)
             time.sleep(period)
 
     def send_checkin(self, chat_id):
@@ -65,7 +51,7 @@ class Notification():
         # hiroku bot
         token = "855364779:AAEMZZgLu9qzhhoWhiiz5f84QJ5CJn29Uho"
         text = "Would you like to do self assessment on COVID19?"
-        reply_markup =  {"inline_keyboard": [[{"text": "Yes","callback_data": "Self Assessment"}],[{"text": "No","callback_data" : "Nope"}]]}
+        reply_markup =  {"inline_keyboard": [[{"text": "Yes","callback_data": "Self Assessment"},{"text": "No","callback_data" : "Nope"}]]}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         data = {'chat_id': chat_id, 'text': text, 'reply_markup': json.dumps(reply_markup)}
         
