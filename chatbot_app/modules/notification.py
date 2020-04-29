@@ -41,9 +41,13 @@ class Notification():
                 if notify_dt < current_dt and checkin == True:
                     print("PID: " + str(os.getpid()))
                     self.send_checkin(chat_id)
+                    print('after send here')
                     #reset checkin to avoid resending
+                    print('before update here')
                     userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
                     print("Sent Notification for checkin user!!")
+                    print("time to send?", notify_dt < current_dt)
+                    print("checkin: " + str(checkin))
             time.sleep(period)
 
     def send_checkin(self, chat_id):
