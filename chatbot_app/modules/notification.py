@@ -22,20 +22,24 @@ class Notification():
                 chat_id = user['chat_ID']
                 current_dt = timezone.now()
                 notify_dt = None
-                print("diag: " + str(diag_result))
-                print("checkin: " + str(checkin))
-                print("record : " + str(recorded_dt))
-                print("current: " + str(current_dt))
                 if diag_result == '1':
-                    notify_dt = recorded_dt + datetime.timedelta(seconds=10)
+                    notify_dt = recorded_dt + datetime.timedelta(seconds=15)
                     #notify_dt = recorded_dt + datetime.timedelta(days=2)
                 elif diag_result == '2':
-                    notify_dt = recorded_dt + datetime.timedelta(seconds=20)
+                    notify_dt = recorded_dt + datetime.timedelta(seconds=25)
                     #notify_dt = recorded_dt + datetime.timedelta(days=14)
                 else:
                     print("diag_result is not either 1 or 2.")
+                print('---')
+                print("diag: " + str(diag_result))
+                print("chatid: " + str(chat_id))
+                print("record : " + str(recorded_dt))
+                print("current: " + str(current_dt))
+                print("time to send?", notify_dt < current_dt)
+                print("checkin: " + str(checkin))
 
                 if notify_dt < current_dt and checkin == True:
+                    print("PID: " + str(os.getpid()))
                     self.send_checkin(chat_id)
                     #reset checkin to avoid resending
                     userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
