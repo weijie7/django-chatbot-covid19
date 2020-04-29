@@ -39,6 +39,8 @@ class Notification():
                 print("checkin: " + str(checkin))
 
                 if notify_dt < current_dt and checkin == True:
+                    print("time to send?", notify_dt < current_dt)
+                    print("checkin: " + str(checkin))
                     print("PID: " + str(os.getpid()))
                     self.send_checkin(chat_id)
                     print('after send here')
