@@ -37,12 +37,17 @@ class Notification():
                 print("current: " + str(current_dt))
                 print("time to send?", notify_dt < current_dt)
                 print("checkin: " + str(checkin))
+                count = 0
 
                 if notify_dt < current_dt and checkin == True:
+                    count+=1
+                    print(count)
                     print("time to send?", notify_dt < current_dt)
                     print("checkin: " + str(checkin))
                     print("PID: " + str(os.getpid()))
                     self.send_checkin(chat_id)
+                    count+=1
+                    print(count)
                     print('after send here')
                     #reset checkin to avoid resending
                     print('before update here')
@@ -50,6 +55,8 @@ class Notification():
                     print("Sent Notification for checkin user!!")
                     print("time to send?", notify_dt < current_dt)
                     print("checkin: " + str(checkin))
+                    count+=1
+                    print(count)
             time.sleep(period)
 
     def send_checkin(self, chat_id):
