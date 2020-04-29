@@ -1,2 +1,2 @@
 web: gunicorn ChatBot_Main.wsgi --log-file -
-worker: python worker.py
+heroku config:set WEB_CONCURRENCY=1

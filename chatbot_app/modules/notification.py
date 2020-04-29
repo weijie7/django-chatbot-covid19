@@ -10,40 +10,54 @@ class Notification():
     def __init__(self):
         pass
 
-    def checkin_date(self):
+    def checkin_date(self, period):
         print('Start Daemon Process: Checkin Notification.')
-        #while True:
-        #print("Checkin Notification ID: " + str(os.getpid()))
-        self.d_users = list(userDiagnosis.objects.all().values())
-        for user in self.d_users:
-            recorded_dt = user['datetime']
-            diag_result = user['diagnosis_result']
-            checkin = user['check_in']
-            chat_id = user['chat_ID']
-            current_dt = timezone.now()
-            notify_dt = None
-            if diag_result == '1':
-                notify_dt = recorded_dt + datetime.timedelta(seconds=15)
-                #notify_dt = recorded_dt + datetime.timedelta(days=2)
-            elif diag_result == '2':
-                notify_dt = recorded_dt + datetime.timedelta(seconds=25)
-                #notify_dt = recorded_dt + datetime.timedelta(days=14)
-            else:
-                print("diag_result is not either 1 or 2.")
-            print('---')
-            print("diag: " + str(diag_result))
-            print("chatid: " + str(chat_id))
-            print("record : " + str(recorded_dt))
-            print("current: " + str(current_dt))
-            print("time to send?", notify_dt < current_dt)
-            print("checkin: " + str(checkin))
+        while True:
+            #print("Checkin Notification ID: " + str(os.getpid()))
+            self.d_users = list(userDiagnosis.objects.all().values())
+            for user in self.d_users:
+                recorded_dt = user['datetime']
+                diag_result = user['diagnosis_result']
+                checkin = user['check_in']
+                chat_id = user['chat_ID']
+                current_dt = timezone.now()
+                notify_dt = None
+                if diag_result == '1':
+                    notify_dt = recorded_dt + datetime.timedelta(seconds=15)
+                    #notify_dt = recorded_dt + datetime.timedelta(days=2)
+                elif diag_result == '2':
+                    notify_dt = recorded_dt + datetime.timedelta(seconds=25)
+                    #notify_dt = recorded_dt + datetime.timedelta(days=14)
+                else:
+                    print("diag_result is not either 1 or 2.")
+                print('---')
+                print("diag: " + str(diag_result))
+                print("chatid: " + str(chat_id))
+                print("record : " + str(recorded_dt))
+                print("current: " + str(current_dt))
+                print("time to send?", notify_dt < current_dt)
+                print("checkin: " + str(checkin))
+                count = 0
 
-            if notify_dt < current_dt and checkin == True:
-                self.send_checkin(chat_id)
-                #reset checkin to avoid resending
-                userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
-                print("Sent Notification for checkin user!!")
-
+                if notify_dt < current_dt and checkin == True:
+                    count+=1
+                    print(count)
+                    print("time to send?", notify_dt < current_dt)
+                    print("checkin: " + str(checkin))
+                    print("PID: " + str(os.getpid()))
+                    self.send_checkin(chat_id)
+                    count+=1
+                    print(count)
+                    print('after send here')
+                    #reset checkin to avoid resending
+                    print('before update here')
+                    userDiagnosis.objects.filter(chat_ID=chat_id).update(check_in=False)
+                    print("Sent Notification for checkin user!!")
+                    print("time to send?", notify_dt < current_dt)
+                    print("checkin: " + str(checkin))
+                    count+=1
+                    print(count)
+            time.sleep(period)
 
     def send_checkin(self, chat_id):
         # test bot
@@ -51,7 +65,7 @@ class Notification():
         # hiroku bot
         token = "855364779:AAEMZZgLu9qzhhoWhiiz5f84QJ5CJn29Uho"
         text = "Would you like to do self assessment on COVID19?"
-        reply_markup =  {"inline_keyboard": [[{"text": "Yes","callback_data": "Self Assessment"},{"text": "No","callback_data" : "Nope"}]]}
+        reply_markup =  {"inline_keyboard": [[{"text": "Yes","callback_data": "Self Assessment"}],[{"text": "No","callback_data" : "Nope"}]]}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         data = {'chat_id': chat_id, 'text': text, 'reply_markup': json.dumps(reply_markup)}
         
