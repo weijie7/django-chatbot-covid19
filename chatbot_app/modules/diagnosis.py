@@ -96,5 +96,6 @@ class Diagnosis(Server):
             obj_list = [diagnosisResponses(response=text) for text in res_list]
             diagnosisResponses.objects.bulk_create(obj_list)
             print("Updated Diagnosis Responses.")
-        except: 
+        except Exception as e: 
+            print(e)
             print("Error in uploading diagnosisResponses object to server. Check if objects are already exist.")
