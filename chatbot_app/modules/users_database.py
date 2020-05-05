@@ -21,12 +21,12 @@ class UserDB(Server):
     def subscribe(self):
         userList.objects.filter(chat_ID=self.chat_ID).update(subscribe=True)
 
-        self.main_text = f"Thanks for sub,  {self.first_name}! We will let you know if there is any announcement. 😁"
+        self.main_text = f"Thanks for sub, {self.first_name}! We will let you know if there is any announcement. 😁"
         return super().sendMsg(get_fb=True, single=True)
 
     def unsubscribe(self):
         userList.objects.filter(chat_ID=self.chat_ID).update(subscribe=False)
-        self.main_text = f"No prob, {self.first_name}! If you want to subscribe to our announcement, just click here /subscribe ❤️"
+        self.main_text = f"I'm sorry to see you go, {self.first_name}! If you want to subscribe again, just click here /subscribe ❤️"
         return super().sendMsg(get_fb=True, single=True)
 
     def checkin(self):
@@ -50,6 +50,6 @@ class UserDB(Server):
             self.main_text = f"No problem, {self.first_name}. Do ask me again for self assessment anytime 😁"
 
         else:
-            self.main_text = "I don't understand. Please select either yes button or no button! 😁"
+            self.main_text = "I don't understand. Please select from either yes or no button! 😁"
 
-        return super().sendMsg(get_fb=True, single=True)
+        return super().sendMsg(get_fb=False, single=True)

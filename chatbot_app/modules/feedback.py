@@ -20,7 +20,7 @@ class Feedback(Server):
             self.main_text = "Thank you for your input! ❤️"
             rating = 1
         elif rating == "👎":
-            self.main_text = "Thanks for the feedback! I'm sorry you felt that way. We will look into this to improve! ❤️"
+            self.main_text = "I'm sorry you felt that way. If you wish to provide more comment, click here /feedback . We will look into this! ❤️"
             rating = 0
         else:
             self.main_text = "I don't understand. Please select thumbs up/down from the button! 😁"

@@ -1,2 +1,7 @@
-https://www.healthline.com/health/coronavirus-covid-19#risk-factors
-https://en.wikipedia.org/wiki/Coronavirus_disease_2019
+1.	“Coronavirus Update (Live)”, https://www.worldometers.info/coronavirus/
+2.	“MOH, Update on COVID-19”, https://www.moh.gov.sg/covid-19
+3.	“2019 Novel Coronavirus COVID-19 (2019-nCoV) Data Repository by Johns Hopkins CSSE”, https://github.com/CSSEGISandData/COVID-19
+4.	“Singapore COVID-19 Symptom Checker.”, https://sgcovidcheck.gov.sg/
+5.	“Coronavirus Symptoms, Treatment, Preventions”, https://www.healthline.com/health/coronavirus-covid-19#risk-factors
+6.	“Origin of Coronavirus”, https://en.wikipedia.org/wiki/Coronavirus_disease_2019
+7.	
