@@ -67,17 +67,17 @@ class Webscrape():
         ax3.set_yticks(np.linspace(ax3.get_yticks()[0], round(ax3.get_yticks()[-1]), 6))
         ax2.set_yticks(np.linspace(ax2.get_yticks()[0], round(ax2.get_yticks()[-1],-3), 6))
         #plt.savefig('static/plots/worldwide.png',bbox_inches = "tight")
+        graphPlot.objects.all().delete()
         figure = io.BytesIO()
         plt.savefig(figure, format = 'png',bbox_inches = "tight")
         image = ImageFile(figure)
         plot_instance = graphPlot(name = 'worldwide.png')
         plot_instance.plot.save('worldwide.png', image)
-
         print('Graphs Job Completed')
 
         globalLastUpdate.objects.all().delete()
         globalStatus.objects.all().delete()
-        graphPlot.objects.all().delete()
+        
         try:
             globalStatus.objects.bulk_create(model_instance)
             print('Update globalStatus complete!')

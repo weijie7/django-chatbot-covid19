@@ -89,12 +89,10 @@ class Diagnosis(Server):
         #get data from excel file
         data = pd.read_excel('chatbot_app/components/database.xlsx', 'Sheet1', index_col=None, na_values=['NA'])
         res_dict = data.to_dict('records')
-        dgs_instance = [diagnosisResponses(response=d['Responses'].replace('\xa0',' '), query_ID=d['QueryID']) for d in res_dict]
-        diagnosisResponses.objects.bulk_create(dgs_instance)
 
         try:
-            obj_list = [diagnosisResponses(response=text) for text in res_list]
-            diagnosisResponses.objects.bulk_create(obj_list)
+            dgs_instance = [diagnosisResponses(response=d['Responses'].replace('\xa0',' '), query_ID=d['QueryID']) for d in res_dict]
+            diagnosisResponses.objects.bulk_create(dgs_instance)
             print("Updated Diagnosis Responses.")
         except Exception as e: 
             print(e)
