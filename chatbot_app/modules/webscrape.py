@@ -41,9 +41,9 @@ class Webscrape():
                 row.append(val)
             res.append(row)
 
-        col = ['country', 'diagnosed', 'new_cases', 'death',
+        col = ['id','country', 'diagnosed', 'new_cases', 'death',
             'new_death', 'discharged', 'active', 'critical']
-        pd_table = pd.DataFrame(res).iloc[8:,:8]
+        pd_table = pd.DataFrame(res).iloc[8:,:9]
         pd_table.columns = col
         pd_table.drop( pd_table[ pd_table['country'] == 'total:' ].index , inplace=True)
         global_dict = pd_table.to_dict('records')
