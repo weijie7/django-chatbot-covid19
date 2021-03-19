@@ -1,4 +1,4 @@
-django==2.2.10
+django==2.2.18
 beautifulsoup4==4.8.2
 requests==2.22.0
 pandas==1.0.1
